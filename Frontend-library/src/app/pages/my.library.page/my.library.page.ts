@@ -20,10 +20,6 @@ export class MyLibraryPage {
 
 
 
-  // agregando comentarios
-
-  // @Output() Modal: EventEmitter<any> = new EventEmitter<any>();
-
    public modalStep = 1;
   public formModel = {
     title: '',
