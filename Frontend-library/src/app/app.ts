@@ -6,9 +6,9 @@ import { SearchBarComponent } from './components/search.bar.component/search.bar
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavigationBarComponent,SearchBarComponent],
+  imports: [RouterOutlet, NavigationBarComponent, SearchBarComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('Frontend-library');

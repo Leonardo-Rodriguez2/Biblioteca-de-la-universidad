@@ -1,146 +1,13 @@
 
-  <!-- Volver a repasar el @input y @output de angular y separar la modal de agregar en otro componente -->
 
 
 
-
-
-
-<dialog id="my_modal_4" class="modal">
-  <div class="modal-box w-11/12 max-w-5xl">
-    <h3 class="text-lg font-bold">Registrar nuevo documento</h3>
-    <ul class="steps steps-vertical lg:steps-horizontal mb-4">
-      <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Informacion del documento</li>
-      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">Selecione el documento</li>
-      <li [ngClass]="modalStep>=3? 'step step-primary':'step'">Verificando</li>
-      <li [ngClass]="modalStep>=4? 'step step-primary':'step'">Listo</li>
-    </ul>
-
-    <!-- Ventana 1 Informacion del documento -->
-    @if (modalStep === 1) {
-      <div>
-        <div class="mt-6 grid grid-cols-2 gap-3">
-          <input class="input input-bordered" placeholder="Título del documento" [(ngModel)]="formModel.title" name="title" title="El titulo del documento no puede ser menor a 3 caracteres ni mayor a 50" required minlength="3" maxlength="50" />
-          <div class="flex gap-2">
-  
-          </div>
-          <div class="flex gap-2">
-            <select [(ngModel)]="formModel.career" class="select required">
-              <option disabled selected>Carrera</option>
-              <option>Ingeneria en Sistemas</option>
-              <option>Veterinaria</option>
-              <option>Agroalimentacion</option>
-            </select>
-
-
-            <select [(ngModel)]="formModel.subject" class="select" required>
-              <option disabled selected>Asignatura</option>
-              <option>Ingeneria en Sistemas</option>
-              <option>Veterinaria</option>
-              <option>Agroalimentacion</option>
-            </select>
-          </div>
-        </div>
-        <div class="flex gap-2 mt-2">
-          <textarea class="textarea textarea-bordered size-full" placeholder="Descripción" [(ngModel)]="formModel.description" name="description"></textarea>
-        </div>
-        <div class="modal-action mt-4">
-          <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary" (click)="nextStep()" [disabled]="!formModel.title || !formModel.career || !formModel.subject">Siguiente</button>
-        </div>
-      </div>
-    }
-
-    <!-- ventana 2 selecione el documento -->
-     @if (modalStep === 2) {
-       <div>
-<div class="flex items-center justify-center w-full">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 bg-neutral-secondary-medium border border-dashed border-default-strong rounded-base cursor-pointer hover:bg-neutral-tertiary-medium">
-        <div class="flex flex-col items-center justify-center text-body pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"/></svg>
-            <p class="mb-2 text-sm"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-        </div>
-        <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" />
-    </label>
-</div> 
-
-         @if (selectedFile) {
-           <div class="mt-2">
-             <div class="text-sm">Archivo: "nombre ejemplo"</div>
-           </div>
-         }
-         <div class="modal-action mt-4">
-           <button class="btn" (click)="prevStep()">Atrás</button>
-           <button class="btn btn-primary" (click)="startUpload()" [disabled]="!selectedFile">Subir</button>
-         </div>
-       </div>
-     }
-
-     <!-- ventana 3 Verificacion -->
-    @if (modalStep === 3) {
-      <div>
-        <p class="text-sm mb-4">Verificando archivo...</p>
-        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-          <div class="bg-blue-500 h-3" [style.width.%]="uploadProgress"></div>
-        </div>
-        <div class="modal-action mt-4">
-          <button class="btn" (click)="closeModal()" [disabled]="isUploading">Cancelar</button>
-        </div>
-      </div>
-    }
-
-  
-    <!-- ventana 4 Listo -->
-    @if (modalStep === 4) {
-      <div class="text-center">
-        <p class="text-green-600 font-bold text-lg">¡Listo! El documento se guardó en la lista pendiente.</p>
-        <p class="text-sm mt-2">Se enviará a la base de datos cuando esté disponible.</p>
-        <div class="modal-action mt-4">
-        <button class="btn btn-primary" (click)="confirmDone()">Cerrar</button>
-      </div>
-    </div>
-    }
-  </div>
-
-</dialog>
-
-
-
-
-
-
-
-
-
-      <div class="max-w-6xl mx-auto p-8">
-    
-            <section class="mb-12">
-        <h2 class="text-xl font-extrabold mb-6">Mi Biblioteca personal</h2>
-        <div class="bg-green-50 rounded-3xl p-8 flex items-center justify-between overflow-hidden relative border border-green-100">
-          <div class="max-w-md">
-            <p class="text-sm text-gray-700">
-              <span class="font-bold text-green-800"> Agrege un nuevo documentos para el sistema </span> y recuerde que el archivo debe tener un formato válida (.pdf, .docx).
-            </p>
-            <button (click)="openModal()" class="btn cursor-pointer mt-4 bg-white border border-gray-200 px-6 py-2 rounded-full text-sm font-bold hover:shadow-sm transition">
-              + Agregar documento
-            </button>
-          </div>
-          <div class="flex gap-2">
-            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📄</div>
-            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📈</div>
-            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📋</div>
-          </div>
-
-          </div>
-      </section>
 
       <!-- Modal para agregar documento -->
       <app-modal-to-add-document-component ></app-modal-to-add-document-component> 
 
 
-
-      <section class="mb-12">
+      <section class="max-w-6xl mx-auto">
         <h2 class="text-xl font-bold text-gray-800 mb-6"> Verificado </h2>
     
       
@@ -157,11 +24,8 @@
 
       <app-paginated-component></app-paginated-component>
 
-      </section>
 
-      <div class="h-px bg-gray-300 my-6"></div>
 
-      <section>
       <h2 class="text-xl font-bold text-gray-800 mb-6"> Aun no verificado </h2>
 
       <!-- tarjeta de documento de los docentes por verificar -->
@@ -175,4 +39,3 @@
       
       </section>
 
-    </div>
