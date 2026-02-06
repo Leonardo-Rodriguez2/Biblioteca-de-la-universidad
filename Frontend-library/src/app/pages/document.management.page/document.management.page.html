@@ -1,0 +1,112 @@
+<section class="p-8 max-w-7xl mx-auto bg-gray-50 min-h-screen">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Gestión de Documentos</h1>
+      <p class="text-gray-500 text-sm">Administra y organiza los recursos académicos de los docentes.</p>
+    </div>
+    <div class="flex gap-2 border-b border-gray-200">
+      <button class="pb-2 px-4 border-b-2 border-blue-600 text-blue-600 font-semibold transition">Todos</button>
+      <button class="pb-2 px-4 text-gray-500 hover:text-blue-500 transition">Documentos</button>
+      <button class="pb-2 px-4 text-gray-500 hover:text-blue-500 transition">Proyectos</button>
+    </div>
+  </div>
+
+  <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-wrap lg:flex-nowrap gap-4 items-center">
+    <button class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-bold flex items-center gap-2 transition">
+      <span>🏛️</span> Filtros
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
+      <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-2.5 transition">
+        <option selected>Todas las carreras</option>
+        <option value="sistemas">Ingeniería en Sistemas</option>
+        <option value="veterinaria">Veterinaria</option>
+        <option value="agro">Agroalimentaria</option>
+      </select>
+
+      <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-2.5 transition">
+        <option selected>Todos los años</option>
+        <option value="1">1° Año</option>
+        <option value="2">2° Año</option>
+        <option value="3">3° Año</option>
+      </select>
+
+      <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-2.5 transition">
+        <option selected>Todos los docentes</option>
+        <option value="alfonso">Alfonso Ramirez</option>
+        <option value="alfredo">Alfredo Noguera</option>
+      </select>
+    </div>
+
+    <div class="relative w-full lg:w-72">
+      <input type="text" placeholder="Buscar documento..." class="w-full border border-gray-200 rounded-xl py-2.5 px-11 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-sm transition">
+      <span class="absolute left-4 top-3 text-gray-400">🔍</span>
+    </div>
+  </div>
+
+  <h2 class="text-lg font-bold mb-6 flex items-center gap-2 text-gray-700">
+    <span class="w-2 h-6 bg-blue-600 rounded-full"></span> 
+    Documentos Recientes
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+    <div class="group bg-white rounded-2xl border border-gray-200 p-4 hover:shadow-xl hover:border-blue-200 transition-all duration-300">
+      <div class="relative bg-gray-50 rounded-xl border border-gray-100 overflow-hidden mb-4 aspect-video flex items-center justify-center group-hover:bg-blue-50 transition">
+        <div class="p-6 text-[8px] text-gray-400 leading-tight bg-white shadow-inner w-3/4 h-3/4 rounded-sm border border-gray-100">
+          <p class="font-bold text-[10px] text-blue-800 mb-2 uppercase border-b pb-1">Informe Técnico #01</p>
+          <p>Resumen ejecutivo sobre la gestión de recursos hídricos en zonas áridas...</p>
+          <div class="mt-4 space-y-1">
+            <div class="h-1 bg-gray-100 w-full"></div>
+            <div class="h-1 bg-gray-100 w-5/6"></div>
+          </div>
+        </div>
+        <span class="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded-lg text-[10px] font-bold shadow-lg">PDF</span>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex justify-between items-start">
+          <h3 class="text-sm font-bold text-gray-800 leading-snug group-hover:text-blue-600 transition">Informe de Prácticas Veterinarias - Búfalos</h3>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md font-bold border border-blue-100">ALFONSO RAMIREZ</span>
+          <span class="text-[10px] text-gray-400">• 24 Ene 2026</span>
+        </div>
+
+        <p class="text-[11px] text-gray-500 flex items-center gap-1 italic">
+          📂 Sistemas de Producción Animal
+        </p>
+
+        <div class="flex gap-2 pt-3">
+          <button class="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition">
+            ⚙️ Editar
+          </button>
+          <button class="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-red-100 rounded-xl text-[11px] font-bold text-red-600 hover:bg-red-50 transition">
+            🗑️ Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+
+  <nav class="flex justify-center mt-12">
+    <ul class="flex items-center gap-1 bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+      <li>
+        <a href="#" class="px-4 py-2 text-gray-500 hover:text-blue-600 font-medium text-sm">Anterior</a>
+      </li>
+      <li>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-600 text-white font-bold text-sm">1</a>
+      </li>
+      <li>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 text-gray-600 font-bold text-sm transition">2</a>
+      </li>
+      <li>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 text-gray-600 font-bold text-sm transition">3</a>
+      </li>
+      <li>
+        <a href="#" class="px-4 py-2 text-gray-500 hover:text-blue-600 font-medium text-sm">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+</section>
