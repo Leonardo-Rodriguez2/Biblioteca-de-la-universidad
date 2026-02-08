@@ -1,18 +1,20 @@
+
 import express from 'express';
-import router from './router/login.route.js';
+import router from './router/teaching.route.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-
 
 app.get('/', (req, res) => {
+  res.send("hola mundo");
 });
 
-app.use('/login', router);
+app.use('/docente', router)
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor encendido en la ruta http://localhost:${PORT}`);
 });
+
+
