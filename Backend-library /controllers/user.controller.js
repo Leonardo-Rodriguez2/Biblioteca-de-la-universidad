@@ -1,5 +1,4 @@
 
-import express from 'express';
 import db from '../db/connection.js';
 
 
@@ -92,11 +91,9 @@ const teachingController = {
             res.status(200).json({ message: "Datos del usuario actualizado", err: false });
         })
 
-    }
-
+    },
 
 
 }
-
 
 export default teachingController;
