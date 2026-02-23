@@ -2,6 +2,9 @@
 import db from '../db/connection.js';
 
 const subjectController = {
+
+    // Metodo para mostrar todas las asignaturas
+
     getAllSubjects: (req, res) => {
         const query = 'SELECT * FROM asignaturas';
         db.query(query, (err, data) => {
@@ -9,11 +12,11 @@ const subjectController = {
                 console.log("error en la consulta", err);
                 res.status(500).json({ message: "Error en el servidor al obtener las asignaturas", err: true });
             }
-            console.log("consulta exitosa", data);
             res.status(200).json({ message: "Asignaturas obtenidas exitosamente", data: data, err: false });
         })
     },
     
+    // Metodo para agregar una nueva asignaruta
 
     addSubject: (req, res) => {
 
@@ -44,6 +47,8 @@ const subjectController = {
         });
     },
 
+    // Metodo para buscar los datos de una asignaruta por su identificador (id)
+
     seachSubject: (req, res) => {
         try {
             const { id } = req.params;
@@ -68,6 +73,8 @@ const subjectController = {
             res.status(500).json({ message: "Error interno del servidor", err: true, errMessage: err.message });
         }
     },
+
+    // Metodo para modificar los valores de una asignatura 
 
     updateSubject: (req, res) => {
         try {
@@ -94,6 +101,7 @@ const subjectController = {
         }
     },
 
+    // Metodo para borra una asignatura
 
     deleteSubject: (req, res) => {
         try{
@@ -122,3 +130,5 @@ const subjectController = {
 }
 
 export default subjectController;
+
+// Puto quien lo lea

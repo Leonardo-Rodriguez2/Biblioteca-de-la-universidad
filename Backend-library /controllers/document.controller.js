@@ -5,10 +5,10 @@ import path from 'path';
 
 const DocumentController = {
 
-    getDocuments: async (req, res) => {
+    getDocuments: (req, res) => {
         try {
             const query = "SELECT * FROM documentos";
-            const [rows] = await db.query(query, (err, results)=> {
+            const [rows] = db.query(query, (err, results) => {
                 if (err) {
                     console.log({ err: err.message });
                     res.status(500).json({ message: "Error en el servidor", err: true });
@@ -21,11 +21,13 @@ const DocumentController = {
         }
     },
 
+    // Metodo para ver el contendio del documento
+
     getContentDocument: async (req, res) => {
         try {
             const { id } = req.params;
             const query = "SELECT * FROM documentos WHERE id = ?";
-            const [rows] = await db.query(query, [id], (err, results) => {
+            const [rows] = db.query(query, [id], (err, results) => {
                 if (err) {
                     console.log({ err: err.message });
                     res.status(500).json({ message: "Error en el servidor", err: true });

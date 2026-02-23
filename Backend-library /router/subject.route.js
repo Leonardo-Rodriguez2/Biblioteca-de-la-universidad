@@ -1,18 +1,19 @@
 
 import Router from 'express';
 import subjectController from '../controllers/subject.controller.js';
+import jwtMiddleware from '../middleware/jwt.middleware.js';
 
 const router = Router();
 
-router.get('/', subjectController.getAllSubjects);
+router.get('/', jwtMiddleware.verifyJwt, subjectController.getAllSubjects);
 
-router.post('/', subjectController.addSubject);
+router.post('/', jwtMiddleware.verifyJwt, subjectController.addSubject);
 
-router.get('/:id', subjectController.seachSubject);
+router.get('/:id', jwtMiddleware.verifyJwt, subjectController.seachSubject);
 
-router.put('/:id', subjectController.updateSubject);
+router.put('/:id', jwtMiddleware.verifyJwt, subjectController.updateSubject);
 
-router.delete('/:id', subjectController.deleteSubject);
+router.delete('/:id', jwtMiddleware.verifyJwt,  subjectController.deleteSubject);
 
 
 export default router;
