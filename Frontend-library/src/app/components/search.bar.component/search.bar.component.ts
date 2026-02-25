@@ -1,17 +1,16 @@
-import { Component } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
-import { NavigationBarComponent } from '../navigation.bar.component/navigation.bar.component';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-search-bar',
   standalone: true,
-  imports: [],
   templateUrl: './search.bar.component.html',
-  styleUrls: ['./search.bar.component.css'],
 })
 export class SearchBarComponent {
+  // El nombre del evento que escuchará el Layout
+  @Output() sidebarToggle = new EventEmitter<void>();
 
-
-
-
+  onToggleClick() {
+    console.log('Botón presionado en SearchBar'); // Para debugear
+    this.sidebarToggle.emit();
+  }
 }

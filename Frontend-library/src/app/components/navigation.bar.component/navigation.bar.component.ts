@@ -1,6 +1,5 @@
-import { NgClass, NgIf } from '@angular/common';
-import { Component, Output, EventEmitter } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, Input, Output, EventEmitter } from '@angular/core'; // Añadimos Output y EventEmitter
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -10,21 +9,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrls: ['./navigation.bar.component.css'],
 })
 export class NavigationBarComponent {
+  @Input() isSidebarOpen: boolean = true;
+  
+  // Nuevo: Evento para cerrar cuando se toca fuera
+  @Output() closeSidebar = new EventEmitter<void>();
 
-  @Output() sidebarToggle = new EventEmitter<boolean>();
-  @Output() isSidebarOpenChange = new EventEmitter<boolean>();
-
-  isSidebarOpen = true;
-
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-    this.sidebarToggle.emit(this.isSidebarOpen);
-    this.isSidebarOpenChange.emit(this.isSidebarOpen);
-    if (this.isSidebarOpen) {
-      document.body.classList.remove('sidebar-collapsed');
-    } else {
-      document.body.classList.add('sidebar-collapsed');
-    }
+  onOverlayClick() {
+    this.closeSidebar.emit();
   }
-
 }

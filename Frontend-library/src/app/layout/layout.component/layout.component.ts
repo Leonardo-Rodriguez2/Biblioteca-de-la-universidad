@@ -8,8 +8,11 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [NavigationBarComponent, SearchBarComponent, RouterOutlet],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css',
 })
 export class LayoutComponent {
+  isSidebarOpen = true;
 
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }
