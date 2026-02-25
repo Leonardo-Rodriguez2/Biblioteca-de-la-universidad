@@ -6,17 +6,20 @@ import { DocumentManagementPage } from './pages/document.management.page/documen
 import { LoginPage } from './pages/login.page/login.page';
 import { LayoutComponent } from './layout/layout.component/layout.component';
 import { authGuard } from './guard/auth.guard-guard';
+import { UserManagementPage } from './pages/user.management.page/user.management.page';
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginPage, pathMatch: 'full' },
     { 
         path: '',
         component: LayoutComponent,
+        canActivate: [authGuard],
         children: [
             { path: 'home', canActivate: [authGuard], component: HomePage, pathMatch: 'full' },
             { path: 'library', canActivate: [authGuard], component: LibraryPage, pathMatch: 'full' },
             { path: 'myLibrary', canActivate: [authGuard], component: MyLibraryPage, pathMatch: 'full' },
             { path: 'DocumentManagement', canActivate: [authGuard], component: DocumentManagementPage, pathMatch: 'full' },
+            { path: 'userManagement', canActivate: [authGuard], component: UserManagementPage, pathMatch: 'full' },
         ]
     },
     { path: '**', component: LoginPage, pathMatch: 'full' },
