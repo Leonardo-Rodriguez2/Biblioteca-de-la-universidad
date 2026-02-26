@@ -16,5 +16,5 @@ db.connect((error) => {
     console.log('Conexión a la base de datos exitosa');
 });
 
-export default db;
+export default db.promise();
 

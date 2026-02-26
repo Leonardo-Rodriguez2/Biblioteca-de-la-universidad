@@ -10,11 +10,13 @@ router.post('/', teachingController.addTeachings);
 
 router.get('/:id', teachingController.schearTeachings);
 
-router.delete('/:id', teachingController.deleteTeachings);
+router.get('/role/:rol', teachingController.schearUserRole)
 
-router.post('/:id', teachingController.updateTeachings);
+router.put('/:id', teachingController.updateTeachings);
 
-export default router;
+const routerUser = router;
+
+export default routerUser;
 
 
 

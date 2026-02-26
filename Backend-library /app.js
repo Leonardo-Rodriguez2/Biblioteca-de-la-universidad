@@ -1,31 +1,26 @@
 
 import express from 'express';
 import router from './router/subject.route.js';
-// import ArchiveController from './helpers/archive.helper.js';
 import morgan from "morgan";
 import route from './router/auth.route.js';
-import jwtMiddleware from './middleware/jwt.middleware.js';
+import cors from "cors"
+import routerUser from './router/user.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors())
 
 
 app.use('/login', route);
 
-app.get('/', (req, res) => {
-res.send("hola mundo");
-});
-
-// app.use('/usuarios', router);
-
 app.use('/subject', router);
 
+app.use('/user', routerUser)
 
 
-// app.get('/document/:file', ArchiveController.parseMyFile);
 
 app.listen(PORT, () => {
   console.log(`Servidor encendido en la ruta http://localhost:${PORT}`);
