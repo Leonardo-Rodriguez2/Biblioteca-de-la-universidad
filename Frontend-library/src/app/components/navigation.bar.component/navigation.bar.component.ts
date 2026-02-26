@@ -17,4 +17,12 @@ export class NavigationBarComponent {
   onOverlayClick() {
     this.closeSidebar.emit();
   }
+
+
+
+  ClosetSession(){
+    localStorage.removeItem('token');
+    location.reload();
+  }
+
 }

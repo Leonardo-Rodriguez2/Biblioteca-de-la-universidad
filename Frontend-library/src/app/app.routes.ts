@@ -7,11 +7,12 @@ import { LoginPage } from './pages/login.page/login.page';
 import { LayoutComponent } from './layout/layout.component/layout.component';
 import { authGuard } from './guard/auth.guard-guard';
 import { UserManagementPage } from './pages/user.management.page/user.management.page';
+import { NotFoundPage } from './pages/404.page/404.page';
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginPage, pathMatch: 'full' },
     { 
-        path: '',
+        path: 'dashboard',
         component: LayoutComponent,
         canActivate: [authGuard],
         children: [
@@ -22,5 +23,5 @@ export const routes: Routes = [
             { path: 'userManagement', canActivate: [authGuard], component: UserManagementPage, pathMatch: 'full' },
         ]
     },
-    { path: '**', component: LoginPage, pathMatch: 'full' },
+    { path: '**', component: NotFoundPage, pathMatch: 'full' },
 ];

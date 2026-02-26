@@ -23,7 +23,7 @@ export class LoginPage {
     this.auth.authLogin(this.body).subscribe({
       next: (data: any) => {
         console.log('Login exitoso', data);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard/home']);
         localStorage.setItem('token', data.token);
       },
       error: (err: any) => {
