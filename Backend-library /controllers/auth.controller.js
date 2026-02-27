@@ -4,15 +4,13 @@ import db from "../db/connection.js";
 import jwtController from "../helpers/jwt.config.js";
 
 const loginController = {
-    login: (req, res) => {
+    login: async (req, res) => {
+
         const { username, password } = req.body;
 
         const query = "SELECT * FROM usuarios WHERE nombre = ? AND password = ?";
 
-        db.query(query, [username, password], (err, data) => {
-            if (err) {
-                return res.status(500).json({ message: "Error en base de datos", error: err });
-            }
+        const [data] = await db.query(query, [username, password]);
 
             if (data.length === 0) {
                 return res.status(401).json({ message: "Usuario no encontrado" });
@@ -37,7 +35,6 @@ const loginController = {
                 token: jwtController.generateToken({payload}),
                 user: payload,
             });
-        });
     }
 };
 

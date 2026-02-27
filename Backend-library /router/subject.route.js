@@ -5,15 +5,15 @@ import jwtMiddleware from '../middleware/jwt.middleware.js';
 
 const router = Router();
 
-router.get('/', jwtMiddleware.verifyJwt, subjectController.getAllSubjects);
+router.get('/', subjectController.getAllSubjects);
 
-router.post('/', jwtMiddleware.verifyJwt, subjectController.addSubject);
+router.post('/', subjectController.addSubject);
 
-router.get('/:id', jwtMiddleware.verifyJwt, subjectController.seachSubject);
+router.get('/:id', subjectController.seachSubject);
 
-router.put('/:id', jwtMiddleware.verifyJwt, subjectController.updateSubject);
+router.put('/:id', subjectController.updateSubject);
 
-router.delete('/:id', jwtMiddleware.verifyJwt,  subjectController.deleteSubject);
+router.delete('/:id',  subjectController.deleteSubject);
 
 
 export default router;
