@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthLoginService {
   
-  API = "http://localhost:3000";
+  API = "http://192.168.100.34:3000";
   enpoint = "/login"
 
   constructor(private http: HttpClient){

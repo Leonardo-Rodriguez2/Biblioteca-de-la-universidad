@@ -41,36 +41,36 @@
         <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
           <tr>
             <th class="px-6 py-4">Usuario</th>
-            <th class="px-6 py-4">Rol / Área</th>
-            <th class="px-6 py-4">Estado</th>
+            <th class="px-6 py-4">Carrera</th>
+            <th class="px-6 py-4">Semestre</th>
             <th class="px-6 py-4 text-right">Acciones</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 text-slate-600">
-          @for (user of users; track user.id) {
+          @for (subject of subject; track subject.id) {
             <tr class="hover:bg-slate-50 transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div class="w-9 h-9 bg-slate-100 rounded flex items-center justify-center text-slate-500 font-bold border border-slate-200 text-xs">
-                    {{ user.nombre?.substring(0,2) | uppercase }}
+                    {{ subject.nombre?.substring(0,2) }}
                   </div>
                   <div>
-                    <p class="text-sm font-semibold text-slate-800">{{ user.nombre }}</p>
-                    <p class="text-[11px] text-slate-400">{{ user.email }}</p>
+                    <p class="text-sm font-semibold text-slate-800">{{ subject.nombre }}</p>
                   </div>
                 </div>
               </td>
               <td class="px-6 py-4 text-sm">
-                <span class="text-slate-700 font-medium">{{ user.rol }}</span>
-                <p class="text-[11px] text-slate-400 italic">{{ user.area || 'General' }}</p>
+                <span class="text-slate-700 font-medium"> PDF </span>
+                <p class="text-[11px] text-slate-400 italic">{{ subject.carrera_id}} </p>
               </td>
               <td class="px-6 py-4">
                 <span class="px-2 py-1 text-[10px] font-bold uppercase text-green-600 bg-green-50 border border-green-100 rounded">
-                  {{ user.estado || 'Activo' }}
+                  {{ subject.semestre}}
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
-                <button (click)="openModal(user)" class="text-slate-400 hover:text-blue-600 p-1 transition-colors" title="Editar">✏️</button>
+                <button (click)="openModal(subject)" class="text-slate-400 hover:text-blue-600 p-1 transition-colors" title="Editar">✏️</button>
+                <button (click)="deleteSubject(subject.id)" class="text-slate-400 hover:text-red-600 p-1 transition-colors" title="Eliminar">🗑️</button>
               </td>
             </tr>
           }
@@ -97,27 +97,31 @@
     
     <ul class="steps steps-horizontal w-full my-6 text-xs">
       <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Información</li>
-      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">Rol / Área</li>
+      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">semestre / estado</li>
       <li [ngClass]="modalStep>=3? 'step step-primary':'step'">Listo</li>
     </ul>
 
     @if (modalStep === 1) {
       <div class="space-y-4">
         <div class="form-control">
-          <label class="label"><span class="label-text">Nombre Completo</span></label>
-          <input class="input input-bordered" [(ngModel)]="formModel.nombre" placeholder="Ej. Juan Pérez" />
+          <label class="label"><span class="label-text">Nombre de la asignatura</span></label>
+          <input class="input input-bordered" [(ngModel)]="formModel.name" placeholder="Ej. Juan Pérez" />
         </div>
         <div class="form-control">
-          <label class="label"><span class="label-text">Email</span></label>
+            <label class="label"><span class="label-text"> PNF </span></label>
+            <select class="select select-bordered">
+              <option value="3" > Ingeneria en sistema </option>
+              <option value="2" > Matermatica Aplicada </option>
+            </select>
+          </div>
+        <!-- <div class="form-control">
+          <label class="label"><span class="label-text"> Carrera </span></label>
           <input class="input input-bordered" [(ngModel)]="formModel.email" placeholder="" />
-        </div>
-        <div class="form-control">
-          <label class="label"><span class="label-text">Cedula</span></label>
-          <input class="input input-bordered" [(ngModel)]="formModel.ci" placeholder="" />
-        </div>
+        </div> -->
         <div class="modal-action">
           <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary" (click)="nextStep()" [disabled]="!formModel.nombre || !formModel.email">Siguiente</button>
+          <button class="btn btn-primary" (click)="nextStep()">Siguiente</button>
+          <!-- [disabled]="!formModel.name" -->
         </div>
       </div>
     }
@@ -126,16 +130,17 @@
       <div class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div class="form-control">
-            <label class="label"><span class="label-text">Rol</span></label>
+            <label name="semester" [(ngModel)]="formModel.semester" class="label"><span class="label-text"> Semestre </span></label>
             <select class="select select-bordered">
-              <option value="3" >Docente</option>
-              <option value="2" >Gestor de almacen</option>
+              <option name="semester" value="3" > 1 </option>
+              <option name="semester" value="2" > 2 </option>
+                <option name="semester" value="3" > 3 </option>
             </select>
           </div>
-          <div class="form-control">
+          <!-- <div class="form-control">
             <label class="label"><span class="label-text">Contrasena</span></label>
             <input class="input input-bordered" [(ngModel)]="formModel.password" placeholder="correo.com" />
-          </div>
+          </div> -->
         </div>
         <div class="modal-action">
           <button class="btn" (click)="prevStep()">Atrás</button>

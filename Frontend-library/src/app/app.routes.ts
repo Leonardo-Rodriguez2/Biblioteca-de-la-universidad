@@ -8,9 +8,11 @@ import { LayoutComponent } from './layout/layout.component/layout.component';
 import { authGuard } from './guard/auth.guard-guard';
 import { UserManagementPage } from './pages/user.management.page/user.management.page';
 import { NotFoundPage } from './pages/404.page/404.page';
+import { SubjectManagementPage } from './pages/subject.management.page/subject.management.page';
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginPage, pathMatch: 'full' },
+    { path: '', redirectTo: '/auth/login', pathMatch: 'full'  }, 
     { 
         path: 'dashboard',
         component: LayoutComponent,
@@ -21,6 +23,7 @@ export const routes: Routes = [
             { path: 'myLibrary', canActivate: [authGuard], component: MyLibraryPage, pathMatch: 'full' },
             { path: 'DocumentManagement', canActivate: [authGuard], component: DocumentManagementPage, pathMatch: 'full' },
             { path: 'userManagement', canActivate: [authGuard], component: UserManagementPage, pathMatch: 'full' },
+            { path: 'subjectManagement', canActivate: [authGuard], component: SubjectManagementPage, pathMatch: 'full' },
         ]
     },
     { path: '**', component: NotFoundPage, pathMatch: 'full' },

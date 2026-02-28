@@ -4,28 +4,29 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceUsers {
+export class ServiceSubject {
   
   API = "http://192.168.100.34:3000";
-  enpoint = "/user"
-
+  enpoint = "/subject"
+  
   constructor(private http: HttpClient){
   };
-
-  getAllUsers(){
+  
+  getAllSubject(){
     return this.http.get<any>(`${this.API}${this.enpoint}`)
   }
-
-  addUser(body:any) {
+  
+  addSubject(body:any) {
     return this.http.post<any>(`${this.API}${this.enpoint}`, body);
   }
-
-  updateUser(id: number, body:any) {
+  
+  updateSubject(id: number, body:any) {
     return this.http.put<any>(`${this.API}${this.enpoint}/${id}`, body);
   }
-
-  // deleteUser(id: number){
-  //   return this.http.delete<any>(`${this.API}${this.enpoint}/${id}`);
-  // }
+  
+  deleteSubject(id: number){
+    return this.http.delete<any>(`${this.API}${this.enpoint}/${id}`);
+  }
 
 }
+
