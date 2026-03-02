@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class ServiceUsers {
   
-  API = "http://192.168.100.34:3000";
+  API = "http://localhost:3000";
   enpoint = "/user"
 
   constructor(private http: HttpClient){
@@ -22,6 +22,20 @@ export class ServiceUsers {
 
   updateUser(id: number, body:any) {
     return this.http.put<any>(`${this.API}${this.enpoint}/${id}`, body);
+  }
+
+  // metodo para los filtros de busqueda
+  
+  searchUserByCi(ci: string) {
+    return this.http.get<any>(`${this.API}${this.enpoint}/ci/${ci}`);
+  }
+
+  searchUserByRole(role: string) {
+    return this.http.get<any>(`${this.API}${this.enpoint}/role/${role}`);
+  }
+  
+  searchUserByStatus(status: string) {
+    return this.http.get<any>(`${this.API}${this.enpoint}/status/${status}`);
   }
 
   // deleteUser(id: number){

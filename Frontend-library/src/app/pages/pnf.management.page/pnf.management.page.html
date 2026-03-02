@@ -1,0 +1,105 @@
+<section class="p-4 md:p-8 w-full max-w-7xl mx-auto animate-fadeIn min-h-screen bg-slate-50/50">
+  
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+    <div>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de PNF</h2>
+      <p class="text-slate-500 mt-1">Administra las carreras y programas nacionales de formación.</p>
+    </div>
+    <button (click)="openModal()" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all active:scale-95 gap-2">
+      <span class="text-lg">+</span> Nuevo PNF
+    </button>
+  </div>
+
+  <div class="bg-white p-4 border border-slate-200 rounded-t-xl flex flex-col md:flex-row gap-4 items-center justify-between">
+    <div class="flex flex-1 flex-wrap gap-3 w-full">
+      <div class="relative w-full md:w-80">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </span>
+        <input type="text" placeholder="Buscar carrera..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 text-sm rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white border-x border-b border-slate-200 rounded-b-xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
+          <tr>
+            <th class="px-6 py-4">Código</th>
+            <th class="px-6 py-4">Nombre de la Carrera</th>
+            <th class="px-6 py-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-600">
+          @for (pnf of pnfs; track pnf.id) {
+            <tr class="hover:bg-slate-50 transition-colors group">
+              <td class="px-6 py-4 font-mono text-xs font-bold text-indigo-600">
+                {{ pnf.codigo || 'N/A' }}
+              </td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold text-slate-800">{{ pnf.nombre }}</p>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button (click)="openModal(pnf)" class="text-slate-400 hover:text-indigo-600 p-1 transition-colors" title="Editar">✏️</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<dialog #pnfModal class="modal">
+  <div class="modal-box w-11/12 max-w-2xl">
+    <h3 class="text-lg font-bold">{{ isEdit ? 'Actualizar' : 'Registrar' }} PNF</h3>
+    
+    <ul class="steps steps-horizontal w-full my-6 text-xs">
+      <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Información General</li>
+      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">Confirmación</li>
+    </ul>
+
+    @if (modalStep === 1) {
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="form-control">
+            <label class="label"><span class="label-text">Código PNF</span></label>
+            <input class="input input-bordered" [(ngModel)]="formModel.codigo" placeholder="Ej. PNF-INF" />
+          </div>
+          <div class="form-control">
+            <label class="label"><span class="label-text">Nombre de la Carrera</span></label>
+            <input class="input input-bordered" [(ngModel)]="formModel.nombre" placeholder="Ej. Informática" />
+          </div>
+        </div>
+        <div class="form-control">
+          <label class="label"><span class="label-text">Descripción</span></label>
+          <textarea class="textarea textarea-bordered h-24" [(ngModel)]="formModel.descripcion" placeholder="Breve descripción de la carrera..."></textarea>
+        </div>
+        <div class="modal-action">
+          <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
+          <button class="btn btn-primary" (click)="nextStep()" [disabled]="!formModel.nombre || !formModel.codigo">Siguiente</button>
+        </div>
+      </div>
+    }
+
+    @if (modalStep === 2) {
+      <div class="text-center py-6">
+        <div class="text-5xl mb-4">🎓</div>
+        <p class="text-lg font-medium">¿Confirmas los datos del PNF?</p>
+        <div class="bg-slate-50 p-4 rounded-lg mt-4 text-left">
+          <p class="text-sm"><strong>Nombre:</strong> {{formModel.nombre}}</p>
+          <p class="text-sm"><strong>Código:</strong> {{formModel.codigo}}</p>
+        </div>
+        <div class="modal-action justify-center mt-8">
+          <button class="btn btn-ghost" (click)="prevStep()">Revisar</button>
+          <button class="btn btn-success text-white px-8" (click)="savePnf()">
+            {{ isEdit ? 'Actualizar Carrera' : 'Registrar Carrera' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</dialog>

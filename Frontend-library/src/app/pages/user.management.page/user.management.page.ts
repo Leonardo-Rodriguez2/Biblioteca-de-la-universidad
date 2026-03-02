@@ -108,6 +108,59 @@ getAllUsers() {
     }
   }
 
+
+
+  // metodos para los filtros de busqueda
+
+  filterValue = {
+    ci: '',
+    role: '',
+    status: ''
+  }
+  
+  searchByCi() {
+    if (this.formModel.ci) {
+      this.userService.searchUserByCi(this.formModel.ci).subscribe({
+        next: (res) => {
+          this.users = res.data || [];
+          console.log("Resultados de búsqueda por CI:", this.users);
+        },
+        error: (err) => console.error("Error en búsqueda por CI:", err)
+      });
+    } else {
+      this.getAllUsers();
+    }
+  }
+
+  searchByRole(role: string) {
+    role = role || this.filterValue.role;
+    if (role === 'todo') {
+      this.getAllUsers();
+      return;
+    }
+    
+    this.userService.searchUserByRole(role).subscribe({
+      next: (res) => {
+        this.users = res.data || [];
+        console.log("Resultados de búsqueda por rol:", this.users);
+      },
+      error: (err) => console.error("Error en búsqueda por rol:", err)
+    });
+  }
+
+  searchByStatus(status: string) {
+    status = status || this.filterValue.status;
+    this.userService.searchUserByStatus(status).subscribe({
+      next: (res) => {
+        this.users = res.data || [];
+        console.log("Resultados de búsqueda por estado:", this.users);
+      },
+      error: (err) => console.error("Error en búsqueda por estado:", err)
+    });
+  } 
+
+
+
   // deleteUser(id: number) {
   //   if (confirm('¿Estás seguro de eliminar este usuario?')) {
   //     this.userService.deleteUser(id).subscribe(() => this.getAllUsers());
