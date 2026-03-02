@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API } from '../../shaders/API';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PnfService {
-  API = "http://localhost:3000";
-  enpoint = "/pnf";
+  API = API.baseUrl;
+  enpoint = API.endpoints.pnf;
   
   constructor(private http: HttpClient){
   };

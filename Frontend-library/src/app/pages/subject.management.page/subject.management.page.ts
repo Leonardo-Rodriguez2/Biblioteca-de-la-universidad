@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@
 import { CommonModule, isPlatformBrowser, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ServiceSubject } from '../../services/sevice.subject/service.subject';
+import { PnfService } from '../../services/pnf.service/pnf.service';
 
 @Component({
   selector: 'app-subject.management.page',
@@ -21,7 +22,7 @@ export class SubjectManagementPage implements OnInit {
 
   formModel: any = {
     id: "",
-    career_id: "1",
+    career_id: "",
     name: "",
     semester: ""
   };
@@ -29,6 +30,7 @@ export class SubjectManagementPage implements OnInit {
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.getAllSubject();
+      this.getAllPnf();
     }
   }
 
@@ -109,5 +111,30 @@ export class SubjectManagementPage implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
+  /**
+   * Returns the name of the PNF (career) corresponding to the given id.
+   * Falls back to the id if the lookup fails.
+   */
+  getPnfName(id: any): string {
+    const p = this.dataPnf.find((item: any) => item.id == id);
+    return p ? p.nombre : id;
+  }
+
+
+  pnfService = inject(PnfService);
+
+  dataPnf: any[] = [];
+
+  getAllPnf(){
+    this.pnfService.getAllPnf().subscribe({
+      next: (res: any) => {
+        this.dataPnf = res;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+
 
 }

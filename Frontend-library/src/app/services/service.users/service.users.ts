@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API } from '../../shaders/API';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceUsers {
   
-  API = "http://localhost:3000";
-  enpoint = "/user"
+  API = API.baseUrl;
+  enpoint = API.endpoints.user;
 
   constructor(private http: HttpClient){
   };
