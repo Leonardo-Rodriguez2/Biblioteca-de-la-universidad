@@ -8,11 +8,16 @@ router.get('/', teachingController.getTeachings);
 
 router.post('/', teachingController.addTeachings);
 
-router.get('/:id', teachingController.schearTeachings);
-
-router.get('/role/:rol', teachingController.schearUserRole)
-
 router.put('/:id', teachingController.updateTeachings);
+
+// Rutas para los filtros de busqueda
+
+router.get('/ci/:ci', teachingController.schearUser);
+
+router.get('/role/:rol', teachingController.schearUserRole);
+
+router.get('/status/:status', teachingController.schearUserStatus);
+
 
 const routerUser = router;
 

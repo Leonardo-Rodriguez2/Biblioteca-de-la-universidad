@@ -22,7 +22,7 @@ app.use('/user', routerUser)
 
 
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`Servidor encendido en la ruta http://localhost:${PORT}`);
 });
 
