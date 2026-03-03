@@ -1,171 +1,183 @@
-<section class="p-4 md:p-8 w-full max-w-7xl mx-auto animate-fadeIn min-h-screen bg-slate-50/50">
+<section class="p-4 md:p-8 w-full max-w-7xl mx-auto animate-fadeIn min-h-screen bg-slate-50/30">
 
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
     <div>
-      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de Asignatura</h2>
-      <p class="text-slate-500 mt-1">Administra los accesos, roles y permisos del personal institucional.</p>
+      <div class="flex items-center gap-3 mb-2">
+        <div class="p-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Asignaturas</h2>
+      </div>
+      <p class="text-slate-500 text-sm">Organiza el catálogo de materias por carrera y trayecto académico.</p>
     </div>
-    <button (click)="openModal()" class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-200 transition-all active:scale-95 gap-2">
-      <span class="text-lg">+</span> Nuevo Usuario
+    
+    <button (click)="openModal()" type="button" class="btn btn-primary shadow-lg shadow-blue-500/20 normal-case border-none px-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nueva Asignatura
     </button>
   </div>
 
-  <div class="bg-white p-4 border border-slate-200 rounded-t-xl flex flex-col md:flex-row gap-4 items-center justify-between">
-    <div class="flex flex-1 flex-wrap gap-3 w-full">
-      <div class="relative w-full md:w-80">
+  <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm mb-6">
+    <div class="flex flex-col lg:flex-row gap-4 items-center">
+      <div class="relative w-full lg:max-w-md">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </span>
-        <input type="text" placeholder="Buscar por nombre..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 text-sm rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+        <input type="text" placeholder="Buscar asignatura..." class="input input-bordered w-full pl-10 bg-slate-50 focus:bg-white transition-all">
       </div>
-      
-      <select class="select select-sm select-bordered h-10 bg-slate-50 border-slate-200 text-slate-600 rounded-lg">
-        <option disabled selected>Todas las Carrera</option>
-        @for (pnf of dataPnf; track pnf.id) {
-          <option [value]="pnf.id">{{ pnf.nombre }}</option>
-        }
-      </select>
 
-      <select class="select select-sm select-bordered h-10 bg-slate-50 border-slate-200 text-slate-600 rounded-lg">
-        <option disabled selected>Todos los semestres</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
+      <div class="flex flex-wrap gap-3 w-full lg:w-auto">
+        <select class="select select-bordered bg-slate-50">
+          <option disabled selected>Filtrar por Carrera</option>
+          @for (pnf of dataPnf; track pnf.id) {
+            <option [value]="pnf.id">{{ pnf.nombre }}</option>
+          }
+        </select>
+      </div>
+    
+      <div class="flex flex-wrap gap-3 w-full lg:w-auto">
+        <select class="select select-bordered bg-slate-50">
+          <option disabled selected>Semestre</option>
+          <option value="1">1ero</option>
+          <option value="2">2do</option>
+          <option value="3">3ero</option>
+        </select>
+      </div>
     </div>
   </div>
 
-  <div class="bg-white border-x border-b border-slate-200 rounded-b-xl shadow-sm overflow-hidden">
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
-          <tr>
-            <th class="px-6 py-4">Usuario</th>
-            <th class="px-6 py-4">Carrera</th>
-            <th class="px-6 py-4">Semestre</th>
-            <th class="px-6 py-4 text-right">Acciones</th>
+      <table class="table w-full">
+        <thead>
+          <tr class="bg-slate-50/50 border-b border-slate-100">
+            <th class="py-5 px-6 uppercase text-[11px] font-bold text-slate-500">Asignatura</th>
+            <th class="py-5 px-6 uppercase text-[11px] font-bold text-slate-500">Carrera / PNF</th>
+            <th class="py-5 px-6 uppercase text-[11px] font-bold text-slate-500 text-center">Semestre</th>
+            <th class="py-5 px-6 uppercase text-[11px] font-bold text-slate-500 text-center">Acciones</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100 text-slate-600">
-          @for (subject of subject; track subject.id) {
-            <tr class="hover:bg-slate-50 transition-colors group">
+        <tbody class="divide-y divide-slate-50">
+          @for (sub of subject; track sub.id) {
+            <tr class="hover:bg-slate-50/50 transition-all">
               <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 bg-slate-100 rounded flex items-center justify-center text-slate-500 font-bold border border-slate-200 text-xs">
-                    {{ subject.nombre?.substring(0,2) }}
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center font-bold text-xs border border-slate-200 shadow-sm">
+                    {{ sub.nombre?.substring(0,2).toUpperCase() }}
                   </div>
                   <div>
-                    <p class="text-sm font-semibold text-slate-800">{{ subject.nombre }}</p>
+                    <p class="text-sm font-bold text-slate-700 leading-none mb-1">{{ sub.nombre }}</p>
+                    <p class="text-[11px] text-slate-400 font-medium">ID: #{{ sub.id }}</p>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 text-sm">
-                <span class="text-slate-700 font-medium"> PNF </span>
-                <p class="text-[11px] text-slate-400 italic">{{ getPnfName(subject.carrera_id) }} </p>
+              <td class="px-6 py-4 text-sm font-medium text-slate-600">
+                {{ getPnfName(sub.carrera_id) }}
               </td>
-              <td class="px-6 py-4">
-                <span class="px-2 py-1 text-[10px] font-bold uppercase text-green-600 bg-green-50 border border-green-100 rounded">
-                  {{ subject.semestre}}
+              <td class="px-6 py-4 text-center">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white text-slate-700 text-xs font-bold border border-slate-200">
+                  {{ sub.semestre }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-right">
-                <button (click)="openModal(subject)" class="text-slate-400 hover:text-blue-600 p-1 transition-colors" title="Editar">✏️</button>
-                <button (click)="deleteSubject(subject.id)" class="text-slate-400 hover:text-red-600 p-1 transition-colors" title="Eliminar">🗑️</button>
+              <td class="px-6 py-4">
+                <div class="flex items-center justify-center gap-2">
+                  <button (click)="openModal(sub)" type="button" class="btn btn-sm btn-square bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border-blue-100 transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                  </button>
+                  <button (click)="deleteSubject(sub.id)" type="button" class="btn btn-sm btn-square bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border-rose-100 transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                  </button>
+                </div>
               </td>
             </tr>
           }
         </tbody>
       </table>
     </div>
-
-    <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
-      <span class="text-sm text-slate-500">Mostrando registros del <span class="font-semibold text-slate-700">1 al 10</span></span>
-      <div class="join shadow-sm bg-white border border-slate-200">
-        <button class="join-item btn btn-xs btn-ghost text-slate-400 hover:text-blue-600">«</button>
-        <button class="join-item btn btn-xs btn-ghost text-blue-600 font-bold">1</button>
-        <button class="join-item btn btn-xs btn-ghost">2</button>
-        <button class="join-item btn btn-xs btn-ghost">3</button>
-        <button class="join-item btn btn-xs btn-ghost text-slate-400 hover:text-blue-600">»</button>
-      </div>
-    </div>
   </div>
 </section>
 
-<dialog #userModal class="modal">
-  <div class="modal-box w-11/12 max-w-2xl">
-    <h3 class="text-lg font-bold">{{ isEdit ? 'Actualizar' : 'Registrar' }} Usuario</h3>
+<dialog #userModal id="userModal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box p-0 overflow-hidden max-w-xl bg-white">
     
-    <ul class="steps steps-horizontal w-full my-6 text-xs">
-      <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Información</li>
-      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">semestre / estado</li>
-      <li [ngClass]="modalStep>=3? 'step step-primary':'step'">Listo</li>
-    </ul>
+    <div class="bg-slate-50 p-6 border-b border-slate-100">
+      <h3 class="text-xl font-bold text-slate-800">{{ isEdit ? 'Actualizar' : 'Registrar' }} Asignatura</h3>
+      <p class="text-xs text-slate-500">Define los parámetros académicos de la materia.</p>
+    </div>
 
-    @if (modalStep === 1) {
-      <div class="space-y-4">
-        <div class="form-control">
-          <label class="label"><span class="label-text">Nombre de la asignatura</span></label>
-          <input class="input input-bordered" [(ngModel)]="formModel.name" placeholder="Ej. Juan Pérez" />
-        </div>
-        <div class="form-control">
-            <label class="label"><span class="label-text"> PNF </span></label>
-            <select name="pnfValue" [(ngModel)]="formModel.career_id" class="select select-bordered">
-                @for (pnf of dataPnf; track pnf.id) {
-                <option name="pnfValue" [value]="pnf.id">{{ pnf.nombre }}</option>
-                }
-            </select>
-          </div>
-        <!-- <div class="form-control">
-          <label class="label"><span class="label-text"> Carrera </span></label>
-          <input class="input input-bordered" [(ngModel)]="formModel.email" placeholder="" />
-        </div> -->
-        <div class="modal-action">
-          <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary" (click)="nextStep()">Siguiente</button>
-          <!-- [disabled]="!formModel.name" -->
-        </div>
-      </div>
-    }
+    <div class="px-8 pt-8">
+        <ul class="steps w-full text-[10px] uppercase font-bold tracking-tighter">
+            <li [ngClass]="modalStep>=1? 'step step-primary':'step'" class="">Información</li>
+            <li [ngClass]="modalStep>=2? 'step step-primary':'step'" class=" text-slate-400">Semestre</li>
+            <li [ngClass]="modalStep>=3? 'step step-primary':'step'" class=" text-slate-400">Listo</li>
+        </ul>
+    </div>
 
-    @if (modalStep === 2) {
-      <div class="space-y-4">
-        <div class="grid grid-cols-2 gap-4">
+    <div class="p-8">
+      @if (modalStep === 1) {
+        <div class="space-y-4 animate-fadeIn">
           <div class="form-control">
-            <label class="label"><span class="label-text"> Semestre </span></label>
-            <select name="semester" [(ngModel)]="formModel.semester" class="select select-bordered">
-              <option value="" disabled selected>Seleccione un semestre</option>
-              <option name="semester" value="1" > 1 </option>
-              <option name="semester" value="2" > 2 </option>
-                <option name="semester" value="3" > 3 </option>
+            <label class="label font-semibold text-slate-700">Nombre de la asignatura</label>
+            <input class="input input-bordered w-full bg-slate-50 focus:bg-white" [(ngModel)]="formModel.nombre" placeholder="Ej. Cálculo I" />
+          </div>
+          <div class="form-control">
+            <label class="label font-semibold text-slate-700">PNF / Carrera</label>
+            <select [(ngModel)]="formModel.carrera_id" class="select select-bordered w-full bg-slate-50">
+              <option value="" disabled selected>Seleccione carrera</option>
+              @for (pnf of dataPnf; track pnf.id) {
+                <option [value]="pnf.id">{{ pnf.nombre }}</option>
+              }
             </select>
           </div>
-          <!-- <div class="form-control">
-            <label class="label"><span class="label-text">Contrasena</span></label>
-            <input class="input input-bordered" [(ngModel)]="formModel.password" placeholder="correo.com" />
-          </div> -->
+          <div class="modal-action">
+            <button type="button" class="btn btn-ghost text-slate-500" (click)="closeModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary px-8" (click)="nextStep()" [disabled]="!formModel.nombre">Siguiente</button>
+          </div>
         </div>
-        <div class="modal-action">
-          <button class="btn" (click)="prevStep()">Atrás</button>
-          <button class="btn btn-primary" (click)="nextStep()">Siguiente</button>
-        </div>
-      </div>
-    }
+      }
 
-    @if (modalStep === 3) {
-      <div class="text-center py-6">
-        <div class="text-5xl mb-4">👤</div>
-        <p class="text-lg font-medium">¿Confirmas los datos de {{formModel.nombre}}?</p>
-        <p class="text-sm text-slate-500 mt-2">Se aplicarán los cambios en la base de datos.</p>
-        <div class="modal-action justify-center mt-8">
-          <button class="btn btn-ghost" (click)="prevStep()">Revisar</button>
-          <button class="btn btn-success text-white px-8" (click)="saveUser()">
-            {{ isEdit ? 'Confirmar Actualización' : 'Confirmar Registro' }}
-          </button>
+      @if (modalStep === 2) {
+        <div class="space-y-4 animate-fadeIn">
+          <div class="form-control w-full">
+            <label class="label font-semibold text-slate-700">Semestre</label>
+            <select [(ngModel)]="formModel.semestre" class="select select-bordered w-full bg-slate-50">
+              <option value="" disabled selected>Seleccione un semestre</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="modal-action">
+            <button type="button" class="btn btn-ghost" (click)="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary px-8" (click)="nextStep()" [disabled]="!formModel.semestre">Siguiente</button>
+          </div>
         </div>
-      </div>
-    }
+      }
+
+      @if (modalStep === 3) {
+        <div class="text-center py-4 animate-fadeIn">
+          <div class="text-5xl mb-4">📚</div>
+          <h4 class="text-lg font-bold text-slate-800">¿Confirmas los datos?</h4>
+          <p class="text-sm text-slate-500 mt-2 italic font-medium">"{{formModel.nombre}}"</p>
+          
+          <div class="modal-action justify-center mt-8 gap-3">
+            <button type="button" class="btn btn-ghost" (click)="prevStep()">Revisar</button>
+            <button type="button" class="btn btn-success text-white px-10 shadow-lg shadow-emerald-500/20" (click)="saveUser()">
+              {{ isEdit ? 'Confirmar Actualización' : 'Confirmar Registro' }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
   </div>
+  
+  <form method="dialog" class="modal-backdrop bg-slate-900/40 backdrop-blur-[2px]">
+    <button (click)="closeModal()">close</button>
+  </form>
 </dialog>

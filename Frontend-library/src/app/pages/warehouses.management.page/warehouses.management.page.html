@@ -1,57 +1,79 @@
-<section class="p-4 md:p-8 w-full max-w-7xl mx-auto animate-fadeIn min-h-screen bg-slate-50/50">
-  
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<section class="p-4 md:p-8 w-full max-w-7xl mx-auto animate-fadeIn min-h-screen bg-slate-50/30">
+
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
     <div>
-      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de Almacenes</h2>
-      <p class="text-slate-500 mt-1">Administra los espacios físicos y responsables de inventario.</p>
+      <div class="flex items-center gap-3 mb-2">
+        <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Almacenes</h2>
+      </div>
+      <p class="text-slate-500 text-sm">Administra los espacios físicos y responsables de inventario institucional.</p>
     </div>
-    <button (click)="openModal()" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all active:scale-95 gap-2">
-      <span class="text-lg">+</span> Nuevo Almacén
+    
+    <button (click)="openModal()" type="button" class="btn btn-primary shadow-lg shadow-blue-500/20 normal-case border-none px-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nuevo Almacén
     </button>
   </div>
 
-  <div class="bg-white p-4 border border-slate-200 rounded-t-xl flex flex-col md:flex-row gap-4 items-center justify-between">
-    <div class="flex flex-1 flex-wrap gap-3 w-full">
-      <div class="relative w-full md:w-80">
+  <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm mb-6">
+    <div class="flex flex-col lg:flex-row gap-4 items-center">
+      <div class="relative w-full lg:max-w-md">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </span>
-        <input type="text" placeholder="Buscar almacén..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 text-sm rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+        <input type="text" placeholder="Buscar por nombre o código..." class="input input-bordered w-full pl-10 bg-slate-50 focus:bg-white transition-all">
       </div>
     </div>
   </div>
 
-  <div class="bg-white border-x border-b border-slate-200 rounded-b-xl shadow-sm overflow-hidden">
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
-          <tr>
-            <th class="px-6 py-4">Código</th>
-            <th class="px-6 py-4">Nombre</th>
-            <th class="px-6 py-4">Ubicación</th>
-            <th class="px-6 py-4">Responsable</th>
-            <th class="px-6 py-4 text-right">Acciones</th>
+      <table class="table w-full">
+        <thead>
+          <tr class="bg-slate-50/50 border-b border-slate-100">
+            <th class="text-slate-500 font-semibold py-5 px-6 uppercase text-[11px] tracking-wider">Código</th>
+            <th class="text-slate-500 font-semibold py-5 px-6 uppercase text-[11px] tracking-wider">Nombre / Ubicación</th>
+            <th class="text-slate-500 font-semibold py-5 px-6 uppercase text-[11px] tracking-wider">Responsable</th>
+            <th class="text-slate-500 font-semibold py-5 px-6 uppercase text-[11px] tracking-wider text-center">Acciones</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100 text-slate-600">
+        <tbody class="divide-y divide-slate-50">
           @for (warehouse of warehouses; track warehouse.id) {
-            <tr class="hover:bg-slate-50 transition-colors group">
+            <tr class="hover:bg-slate-50/50 transition-all">
               <td class="px-6 py-4 font-mono text-xs font-bold text-indigo-600">
                 {{ warehouse.codigo_area || warehouse.code || 'N/A' }}
               </td>
               <td class="px-6 py-4">
-                <p class="text-sm font-semibold text-slate-800">{{ warehouse.nombre || warehouse.name }}</p>
+                <p class="text-sm font-bold text-slate-700 leading-none mb-1">{{ warehouse.nombre || warehouse.name }}</p>
+                <p class="text-[11px] text-slate-400 font-medium italic">{{ warehouse.ubicacion || warehouse.location }}</p>
               </td>
               <td class="px-6 py-4">
-                <p class="text-sm text-slate-600">{{ warehouse.ubicacion || warehouse.location }}</p>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                  {{ warehouse.responsable_almacen || warehouse.responsible || 'Sin asignar' }}
+                </span>
               </td>
               <td class="px-6 py-4">
-                <p class="text-sm text-slate-600">{{ warehouse.responsable_almacen || warehouse.responsible }}</p>
-              </td>
-              <td class="px-6 py-4 text-right">
-                <button (click)="openModal(warehouse)" class="text-slate-400 hover:text-indigo-600 p-1 transition-colors" title="Editar">✏️</button>
+                <div class="flex items-center justify-center gap-2">
+                  <button (click)="openModal(warehouse)" type="button"
+                          class="btn btn-sm btn-square bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white border-indigo-100 transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-square bg-slate-50 text-slate-400 border-slate-200 hover:bg-rose-600 hover:text-white transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
               </td>
             </tr>
           }
@@ -61,97 +83,88 @@
   </div>
 </section>
 
-<dialog #warehouseModal class="modal">
-  <div class="modal-box w-11/12 max-w-2xl border-none shadow-2xl">
-    <div class="flex justify-between items-center mb-2">
-      <h3 class="text-xl font-bold text-slate-800">{{ isEdit ? 'Actualizar' : 'Registrar' }} Almacén</h3>
-      <button (click)="closeModal()" class="btn btn-sm btn-circle btn-ghost">✕</button>
-    </div>
+<dialog #warehouseModal id="warehouseModal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box p-0 overflow-hidden max-w-xl bg-white shadow-2xl">
     
-    <ul class="steps steps-horizontal w-full my-6 text-xs font-semibold">
-      <li [ngClass]="modalStep >= 1 ? 'step step-primary' : 'step'">Información</li>
-      <li [ngClass]="modalStep >= 2 ? 'step step-primary' : 'step'">Detalles</li>
-      <li [ngClass]="modalStep >= 3 ? 'step step-primary' : 'step'">Listo</li>
-    </ul>
+    <div class="bg-slate-50 p-6 border-b border-slate-100">
+      <h3 class="text-xl font-bold text-slate-800">{{ isEdit ? 'Actualizar' : 'Registrar' }} Almacén</h3>
+      <p class="text-xs text-slate-500">Configuración de espacios físicos y control de inventario.</p>
+    </div>
 
-    @if (modalStep === 1) {
-      <div class="space-y-4 animate-fadeIn">
-        <div class="form-control">
-          <label class="label"><span class="label-text font-medium text-slate-600">Nombre del Almacén</span></label>
-          <input class="input input-bordered focus:border-blue-500" [(ngModel)]="formModel.name" placeholder="Ej. Almacén Central" />
-        </div>
-        <div class="form-control">
-          <label class="label"><span class="label-text font-medium text-slate-600">Código</span></label>
-          <input class="input input-bordered focus:border-blue-500" [(ngModel)]="formModel.code" placeholder="Ej. ALM-001" />
-        </div>
-        <div class="modal-action">
-          <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary bg-indigo-600 border-none hover:bg-indigo-700" 
-                  (click)="nextStep()" 
-                  [disabled]="!formModel.name || !formModel.code">
-            Siguiente
-          </button>
-        </div>
-      </div>
-    }
+    <div class="px-8 pt-8">
+        <ul class="steps w-full text-[10px] uppercase font-extrabold tracking-tighter">
+            <li [ngClass]="modalStep>=1? 'step step-primary':'step'" class="">Básico</li>
+            <li [ngClass]="modalStep>=2? 'step step-primary':'step'" class=" text-slate-400">Detalles</li>
+            <li [ngClass]="modalStep>=3? 'step step-primary':'step'" class=" text-slate-400">Confirmar</li>
+        </ul>
+    </div>
 
-    @if (modalStep === 2) {
-      <div class="space-y-4 animate-fadeIn">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="p-8">
+      @if (modalStep === 1) {
+        <div class="space-y-4 animate-fadeIn">
           <div class="form-control">
-            <label class="label"><span class="label-text font-medium text-slate-600">Ubicación</span></label>
-            <input class="input input-bordered focus:border-blue-500" [(ngModel)]="formModel.location" placeholder="Ej. Planta Alta" />
+            <label class="label font-semibold text-slate-700">Nombre del Almacén</label>
+            <input class="input input-bordered w-full bg-slate-50 focus:bg-white" [(ngModel)]="formModel.name" placeholder="Ej. Almacén Central" />
           </div>
           <div class="form-control">
-            <label class="label"><span class="label-text font-medium text-slate-600">Responsable</span></label>
-            <input class="input input-bordered focus:border-blue-500" [(ngModel)]="formModel.responsible" placeholder="Nombre encargado" />
+            <label class="label font-semibold text-slate-700">Código de Identificación</label>
+            <input class="input input-bordered w-full bg-slate-50 focus:bg-white" [(ngModel)]="formModel.code" placeholder="ALM-001" />
+          </div>
+          <div class="modal-action">
+            <button type="button" class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary px-8 shadow-md" (click)="nextStep()" [disabled]="!formModel.name || !formModel.code">Siguiente</button>
           </div>
         </div>
-        <div class="form-control">
-          <label class="label"><span class="label-text font-medium text-slate-600">Descripción</span></label>
-          <textarea class="textarea textarea-bordered h-24 focus:border-blue-500" [(ngModel)]="formModel.description" placeholder="Notas adicionales..."></textarea>
-        </div>
-        <div class="modal-action">
-          <button class="btn btn-ghost" (click)="prevStep()">Atrás</button>
-          <button class="btn btn-primary bg-indigo-600 border-none hover:bg-indigo-700" (click)="nextStep()">
-            Siguiente
-          </button>
-        </div>
-      </div>
-    }
+      }
 
-    @if (modalStep === 3) {
-      <div class="text-center py-6 animate-fadeIn">
-        <div class="text-5xl mb-4 text-indigo-600">📦</div>
-        <p class="text-lg font-bold text-slate-800">¿Confirmas los datos del Almacén?</p>
-        <p class="text-sm text-slate-500 mt-1">Verifica la información antes de guardar.</p>
-        
-        <div class="bg-slate-50 p-4 rounded-xl mt-6 text-left border border-slate-200 space-y-2">
-          <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Nombre:</span>
-            <span class="font-semibold text-slate-800">{{formModel.name}}</span>
+      @if (modalStep === 2) {
+        <div class="space-y-4 animate-fadeIn">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label font-semibold text-slate-700">Ubicación</label>
+              <input class="input input-bordered bg-slate-50" [(ngModel)]="formModel.location" placeholder="Planta Baja" />
+            </div>
+            <div class="form-control">
+              <label class="label font-semibold text-slate-700">Responsable</label>
+              <input class="input input-bordered bg-slate-50" [(ngModel)]="formModel.responsible" placeholder="Nombre completo" />
+            </div>
           </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Código:</span>
-            <span class="font-mono font-bold text-indigo-600">{{formModel.code}}</span>
+          <div class="form-control">
+            <label class="label font-semibold text-slate-700">Descripción / Notas</label>
+            <textarea class="textarea textarea-bordered bg-slate-50 h-24" [(ngModel)]="formModel.description" placeholder="Notas adicionales..."></textarea>
           </div>
-          <div class="flex justify-between text-sm border-t pt-2">
-            <span class="text-slate-500">Ubicación:</span>
-            <span class="text-slate-800">{{formModel.location || 'No definida'}}</span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Responsable:</span>
-            <span class="text-slate-800">{{formModel.responsible || 'No asignado'}}</span>
+          <div class="modal-action">
+            <button type="button" class="btn btn-ghost" (click)="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary px-8" (click)="nextStep()">Siguiente</button>
           </div>
         </div>
+      }
 
-        <div class="modal-action justify-center mt-8 gap-3">
-          <button class="btn btn-ghost" (click)="prevStep()">Revisar</button>
-          <button class="btn btn-success text-white px-10 shadow-md" (click)="saveWarehouse()">
-            {{ isEdit ? 'Confirmar Actualización' : 'Confirmar Registro' }}
-          </button>
+      @if (modalStep === 3) {
+        <div class="text-center py-4 animate-fadeIn">
+          <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+          </div>
+          <h4 class="text-lg font-bold text-slate-800">¿Confirmar Almacén?</h4>
+          
+          <div class="bg-slate-50 p-4 rounded-xl mt-4 text-left border border-slate-100 space-y-2">
+             <p class="text-sm"><strong>Nombre:</strong> {{formModel.name}}</p>
+             <p class="text-sm"><strong>Ubicación:</strong> {{formModel.location || 'N/A'}}</p>
+             <p class="text-sm"><strong>Responsable:</strong> {{formModel.responsible || 'N/A'}}</p>
+          </div>
+          
+          <div class="modal-action justify-center mt-8 gap-3">
+            <button type="button" class="btn btn-ghost" (click)="prevStep()">Revisar</button>
+            <button type="button" class="btn btn-success text-white px-10 shadow-lg shadow-emerald-500/20" (click)="saveWarehouse()">
+              {{ isEdit ? 'Confirmar Actualización' : 'Confirmar Registro' }}
+            </button>
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
+
+  <form method="dialog" class="modal-backdrop bg-slate-900/40 backdrop-blur-[2px]">
+    <button (click)="closeModal()">close</button>
+  </form>
 </dialog>
