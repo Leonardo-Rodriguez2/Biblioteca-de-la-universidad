@@ -6,6 +6,7 @@ export const API = {
         subject: "/subject",
         user: "/user",
         document: "/document",
+        warehouse: "/warehouse",
         auth: "/auth"
     }
 };

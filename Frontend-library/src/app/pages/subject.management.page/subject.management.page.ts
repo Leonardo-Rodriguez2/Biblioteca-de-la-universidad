@@ -112,10 +112,7 @@ export class SubjectManagementPage implements OnInit {
     });
   }
 
-  /**
-   * Returns the name of the PNF (career) corresponding to the given id.
-   * Falls back to the id if the lookup fails.
-   */
+
   getPnfName(id: any): string {
     const p = this.dataPnf.find((item: any) => item.id == id);
     return p ? p.nombre : id;

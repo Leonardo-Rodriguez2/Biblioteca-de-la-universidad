@@ -10,6 +10,7 @@ import { UserManagementPage } from './pages/user.management.page/user.management
 import { NotFoundPage } from './pages/404.page/404.page';
 import { SubjectManagementPage } from './pages/subject.management.page/subject.management.page';
 import { PnfManagementPage } from './pages/pnf.management.page/pnf.management.page';
+import { WarehousesManagementPage } from './pages/warehouses.management.page/warehouses.management.page';
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginPage, pathMatch: 'full' },
@@ -26,6 +27,7 @@ export const routes: Routes = [
             { path: 'userManagement', canActivate: [authGuard], component: UserManagementPage, pathMatch: 'full' },
             { path: 'subjectManagement', canActivate: [authGuard], component: SubjectManagementPage, pathMatch: 'full' },
             { path: 'pnfManagement', canActivate: [authGuard], component: PnfManagementPage, pathMatch: 'full' },
+            { path: 'warehouseManagement', canActivate: [authGuard], component: WarehousesManagementPage, pathMatch: 'full' },
         ]
     },
     { path: '**', component: NotFoundPage, pathMatch: 'full' },

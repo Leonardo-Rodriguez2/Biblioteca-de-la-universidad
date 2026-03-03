@@ -119,8 +119,8 @@ getAllUsers() {
   }
   
   searchByCi() {
-    if (this.formModel.ci) {
-      this.userService.searchUserByCi(this.formModel.ci).subscribe({
+    if (this.filterValue.ci) {
+      this.userService.searchUserByCi(this.filterValue.ci).subscribe({
         next: (res) => {
           this.users = res.data || [];
           console.log("Resultados de búsqueda por CI:", this.users);
