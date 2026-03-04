@@ -30,8 +30,6 @@ export class SubjectManagementPage implements OnInit {
   };
 
   ngOnInit() {
-    // always fetch data; avoiding the platform check ensures the list
-    // populates on first navigation regardless of SSR or hydration.
     this.getAllSubject();
     this.getAllPnf();
   }
