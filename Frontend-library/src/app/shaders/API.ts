@@ -1,6 +1,6 @@
 
 export const API = {
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://192.168.100.34:3000",
     endpoints: {
         pnf: "/pnf",
         subject: "/subject",

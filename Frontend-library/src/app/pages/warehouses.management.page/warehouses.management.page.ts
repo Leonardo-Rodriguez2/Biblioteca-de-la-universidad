@@ -1,5 +1,6 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WarehousesService } from '../../services/warehouses.service/warehouses.service';
 
@@ -13,7 +14,8 @@ import { WarehousesService } from '../../services/warehouses.service/warehouses.
 export class WarehousesManagementPage implements OnInit {
   @ViewChild('warehouseModal') modalRef!: ElementRef<HTMLDialogElement>;
   private warehouseService = inject(WarehousesService);
-  private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
   warehouses: any[] = [];
   modalStep = 1;
@@ -34,15 +36,16 @@ export class WarehousesManagementPage implements OnInit {
   };
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.getAllWarehouses();
-    }
+    this.getAllWarehouses();
   }
 
   getAllWarehouses() {
     this.warehouseService.getAllWarehouses().subscribe({
       next: (res: any) => {
-        this.warehouses = res.data || res;
+        this.ngZone.run(() => {
+          this.warehouses = res.data || res;
+          this.cdr.markForCheck();
+        });
         console.log("Almacenes cargados:", this.warehouses);
       },
       error: (err) => console.error("Error al cargar lista:", err)

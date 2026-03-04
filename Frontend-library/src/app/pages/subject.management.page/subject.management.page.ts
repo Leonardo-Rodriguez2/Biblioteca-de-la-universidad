@@ -1,5 +1,6 @@
-import { Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { CommonModule, isPlatformBrowser, NgClass } from '@angular/common';
+import { Component, ElementRef, inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { CommonModule, NgClass } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServiceSubject } from '../../services/sevice.subject/service.subject';
 import { PnfService } from '../../services/pnf.service/pnf.service';
@@ -14,8 +15,9 @@ import { PnfService } from '../../services/pnf.service/pnf.service';
 export class SubjectManagementPage implements OnInit {
   @ViewChild('userModal') modalRef!: ElementRef<HTMLDialogElement>;
   private subjectService = inject(ServiceSubject);
-  private platformId = inject(PLATFORM_ID);
-  
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+
   subject: any[] = [];
   modalStep = 1;
   isEdit = false;
@@ -28,16 +30,19 @@ export class SubjectManagementPage implements OnInit {
   };
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.getAllSubject();
-      this.getAllPnf();
-    }
+    // always fetch data; avoiding the platform check ensures the list
+    // populates on first navigation regardless of SSR or hydration.
+    this.getAllSubject();
+    this.getAllPnf();
   }
 
   getAllSubject() {
     this.subjectService.getAllSubject().subscribe({
       next: (res: any) => {
-        this.subject = res.data || [];
+        this.ngZone.run(() => {
+          this.subject = res.data || [];
+          this.cdr.markForCheck();
+        });
       },
       error: (err) => console.error(err)
     });
@@ -126,7 +131,10 @@ export class SubjectManagementPage implements OnInit {
   getAllPnf(){
     this.pnfService.getAllPnf().subscribe({
       next: (res: any) => {
-        this.dataPnf = res;
+        this.ngZone.run(() => {
+          this.dataPnf = res;
+          this.cdr.markForCheck();
+        });
       },
       error: (err) => console.error(err)
     });

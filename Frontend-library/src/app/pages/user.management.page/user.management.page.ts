@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef, PLATFORM_ID, NgZone, ChangeDetectorRef } from '@angular/core';
 import { ServiceUsers } from '../../services/service.users/service.users';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,8 @@ export class UserManagementPage implements OnInit {
   @ViewChild('userModal') modalRef!: ElementRef<HTMLDialogElement>;
   private userService = inject(ServiceUsers);
   private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
   users: any[] = [];
   modalStep = 1;
@@ -29,16 +31,19 @@ export class UserManagementPage implements OnInit {
   };
 
 ngOnInit() {
-    // Solo pedimos los usuarios si estamos en el navegador
-    if (isPlatformBrowser(this.platformId)) {
-      this.getAllUsers();
-    }
+    this.getAllUsers();
   }
 
 getAllUsers() {
     this.userService.getAllUsers().subscribe({
       next: (res: any) => {
-        this.users = res.data || []; 
+        // when using the fetch client Angular may not run change
+        // detection automatically, so make sure the assignment
+        // happens inside the zone and/or mark for check.
+        this.ngZone.run(() => {
+          this.users = res.data || [];
+          this.cdr.markForCheck();
+        });
         console.log("Usuarios cargados al recargar:", this.users);
       },
       error: (err) => console.error("Error al recargar lista:", err)

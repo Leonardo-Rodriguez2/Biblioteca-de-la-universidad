@@ -1,5 +1,6 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PnfService } from '../../services/pnf.service/pnf.service';
 
@@ -13,7 +14,8 @@ import { PnfService } from '../../services/pnf.service/pnf.service';
 export class PnfManagementPage implements OnInit {
   @ViewChild('pnfModal') modalRef!: ElementRef<HTMLDialogElement>;
   private pnfService = inject(PnfService);
-  private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
   pnfs: any[] = [];
   modalStep = 1;
@@ -27,16 +29,17 @@ export class PnfManagementPage implements OnInit {
   };
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.getAllPnfs();
-    }
+    this.getAllPnfs();
   }
 
   getAllPnfs() {
     this.pnfService.getAllPnf().subscribe({
       next: (res: any) => {
-        // Asumiendo que la respuesta tiene una estructura similar con .data
-        this.pnfs = res.data || res; 
+        this.ngZone.run(() => {
+          // Asumiendo que la respuesta tiene una estructura similar con .data
+          this.pnfs = res.data || res; 
+          this.cdr.markForCheck();
+        });
         console.log("Carreras cargadas:", this.pnfs);
       },
       error: (err) => console.error("Error al cargar PNF:", err)
