@@ -28,8 +28,8 @@ app.use('/warehouse', routerWarehouses);
 
 
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor encendido en la ruta http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor encendido en la ruta http://192.168.100.34:${PORT}`);
 });
 
 
