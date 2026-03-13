@@ -18,7 +18,11 @@ export class NavigationBarComponent {
     this.closeSidebar.emit();
   }
 
+  data() {
+    const data = JSON.parse(localStorage.getItem('user') || '{}');
+  }
 
+  user = this.data;
 
   ClosetSession(){
     localStorage.removeItem('token');

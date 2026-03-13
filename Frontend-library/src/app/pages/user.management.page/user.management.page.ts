@@ -46,7 +46,7 @@ getAllUsers() {
         });
         console.log("Usuarios cargados al recargar:", this.users);
       },
-      error: (err) => console.error("Error al recargar lista:", err)
+      error: (err: any) => console.error("Error al recargar lista:", err)
     });
   }
 
@@ -91,24 +91,24 @@ getAllUsers() {
       }
 
       this.userService.updateUser(this.formModel.id, this.formModel).subscribe({
-        next: (res) => {
+        next: (res: any) => {
           console.log("Actualización exitosa:", res);
           this.getAllUsers(); // Refrescar tabla
           this.closeModal();  // Cerrar modal
           location.reload()
         },
-        error: (err) => console.error("Error al actualizar:", err)
+        error: (err: any) => console.error("Error al actualizar:", err)
       });
 
     } else {
       console.log(this.formModel)
       this.userService.addUser(this.formModel).subscribe({
-        next: (res) => {
+        next: (res: any) => {
           console.log("Registro exitoso:", res);
           this.getAllUsers();
           this.closeModal();
         },
-        error: (err) => console.error("Error al registrar:", err)
+        error: (err: any) => console.error("Error al registrar:", err)
       });
     }
   }
@@ -126,11 +126,11 @@ getAllUsers() {
   searchByCi() {
     if (this.filterValue.ci) {
       this.userService.searchUserByCi(this.filterValue.ci).subscribe({
-        next: (res) => {
+        next: (res: any) => {
           this.users = res.data || [];
           console.log("Resultados de búsqueda por CI:", this.users);
         },
-        error: (err) => console.error("Error en búsqueda por CI:", err)
+        error: (err: any) => console.error("Error en búsqueda por CI:", err)
       });
     } else {
       this.getAllUsers();
@@ -145,22 +145,22 @@ getAllUsers() {
     }
     
     this.userService.searchUserByRole(role).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.users = res.data || [];
         console.log("Resultados de búsqueda por rol:", this.users);
       },
-      error: (err) => console.error("Error en búsqueda por rol:", err)
+      error: (err: any) => console.error("Error en búsqueda por rol:", err)
     });
   }
 
   searchByStatus(status: string) {
     status = status || this.filterValue.status;
     this.userService.searchUserByStatus(status).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.users = res.data || [];
         console.log("Resultados de búsqueda por estado:", this.users);
       },
-      error: (err) => console.error("Error en búsqueda por estado:", err)
+      error: (err: any) => console.error("Error en búsqueda por estado:", err)
     });
   } 
 

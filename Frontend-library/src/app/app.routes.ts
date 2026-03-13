@@ -10,7 +10,7 @@ import { UserManagementPage } from './pages/user.management.page/user.management
 import { NotFoundPage } from './pages/404.page/404.page';
 import { SubjectManagementPage } from './pages/subject.management.page/subject.management.page';
 import { PnfManagementPage } from './pages/pnf.management.page/pnf.management.page';
-import { WarehousesManagementPage } from './pages/warehouses.management.page/warehouses.management.page';
+import { CategotyManagementPage } from './pages/categoty.management.page/categoty.management.page';
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginPage, pathMatch: 'full' },
@@ -20,14 +20,16 @@ export const routes: Routes = [
         component: LayoutComponent,
         canActivate: [authGuard],
         children: [
+            { path: 'library', component: LibraryPage, pathMatch: 'full' },
             { path: 'home', canActivate: [authGuard], component: HomePage, pathMatch: 'full' },
-            { path: 'library', canActivate: [authGuard], component: LibraryPage, pathMatch: 'full' },
             { path: 'myLibrary', canActivate: [authGuard], component: MyLibraryPage, pathMatch: 'full' },
             { path: 'DocumentManagement', canActivate: [authGuard], component: DocumentManagementPage, pathMatch: 'full' },
             { path: 'userManagement', canActivate: [authGuard], component: UserManagementPage, pathMatch: 'full' },
             { path: 'subjectManagement', canActivate: [authGuard], component: SubjectManagementPage, pathMatch: 'full' },
             { path: 'pnfManagement', canActivate: [authGuard], component: PnfManagementPage, pathMatch: 'full' },
-            { path: 'warehouseManagement', canActivate: [authGuard], component: WarehousesManagementPage, pathMatch: 'full' },
+            { path: 'categoryManagement', canActivate: [authGuard], component: CategotyManagementPage, pathMatch: 'full' },
+            { path: '', redirectTo: '/dashboard/home', pathMatch: 'full'  },
+            { path: '**', component: NotFoundPage, pathMatch: 'full' },
         ]
     },
     { path: '**', component: NotFoundPage, pathMatch: 'full' },

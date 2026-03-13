@@ -25,6 +25,7 @@ export class LoginPage {
         console.log('Login exitoso', data);
         this.router.navigate(['/dashboard/home']);
         localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
       },
       error: (err: any) => {
         console.error('Error en login', err);
