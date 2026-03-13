@@ -29,7 +29,6 @@ const loginController = {
                 gmail: user.email
             };
 
-
             return res.status(200).json({
                 message: "Autenticación exitosa",
                 token: jwtController.generateToken({payload}),

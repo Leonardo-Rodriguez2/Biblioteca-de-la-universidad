@@ -25,10 +25,8 @@ const teachingController = {
     // Metodo para agregar usuarios
 addTeachings: async (req, res) => {
     try {
-        // 1. Extraer datos del body
         const { nombre, ci, email, password, rol } = req.body;
 
-        // 2. Validación de campos obligatorios
         if (!nombre || !ci || !email || !password || !rol) {
             return res.status(400).json({ 
                 message: "Todos los campos son obligatorios", 
@@ -36,8 +34,6 @@ addTeachings: async (req, res) => {
             });
         }
 
-        // 3. Verificar si el usuario ya existe
-        // Usamos [rows] para obtener directamente el array de resultados
         const queryCheck = "SELECT * FROM usuarios WHERE ci = ? OR email = ?";
         const [existingUsers] = await db.query(queryCheck, [ci, email]);
 
@@ -48,13 +44,11 @@ addTeachings: async (req, res) => {
             });
         }
 
-        // 4. Insertar el nuevo docente
         const queryInsert = 'INSERT INTO usuarios (nombre, ci, email, password, rol_id) VALUES (?, ?, ?, ?, ?)';
         const values = [nombre, ci, email, password, rol];
         
         const [result] = await db.query(queryInsert, values);
 
-        // 5. Respuesta exitosa
         return res.status(200).json({ 
             message: "El docente se agregó correctamente", 
             id: result.insertId,
@@ -62,7 +56,6 @@ addTeachings: async (req, res) => {
         });
 
     } catch (error) {
-        // El bloque catch ahora sí atrapará cualquier error de la base de datos
         console.error("Error crítico en addTeachings:", error);
         
         return res.status(500).json({ 
