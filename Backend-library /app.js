@@ -7,6 +7,7 @@ import cors from "cors"
 import routerUser from './router/user.route.js';
 import routerPnf from './router/pnf.route.js';
 import categoryFileRoute from './router/category.file.route.js';
+import documentRoute from './router/document.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,8 @@ app.use('/user', routerUser);
 app.use('/pnf', routerPnf);
 
 app.use('/categories', categoryFileRoute)
+
+app.use('/document', documentRoute);
 
 
 

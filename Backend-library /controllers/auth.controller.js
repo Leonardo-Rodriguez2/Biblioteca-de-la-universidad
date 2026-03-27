@@ -31,7 +31,7 @@ const loginController = {
 
             return res.status(200).json({
                 message: "Autenticación exitosa",
-                token: jwtController.generateToken({payload}),
+                token: jwtController.generateToken(payload),
                 user: payload,
             });
     }
