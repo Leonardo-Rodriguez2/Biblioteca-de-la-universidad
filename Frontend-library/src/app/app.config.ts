@@ -9,10 +9,7 @@ import { authInterceptor } from './interceptor/auth.interceptor-interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
-      // avoid using the fetch-based client because its responses run
-      // outside the Angular zone by default, preventing change
-      // detection from firing until another UI event occurs.
-      // withFetch(),
+      withFetch(),
       withInterceptors([authInterceptor])
     ),
     provideBrowserGlobalErrorListeners(),

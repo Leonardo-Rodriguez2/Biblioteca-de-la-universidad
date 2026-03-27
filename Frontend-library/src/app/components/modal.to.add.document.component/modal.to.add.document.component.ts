@@ -1,7 +1,9 @@
 import { NgClass } from '@angular/common';
-import { Component, Output, output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EventEmitter } from 'stream';
+import { DocumentService } from '../../services/document.service';
+import { ServiceCategory } from '../../services/service.category/service.category';
+import { ServiceSubject } from '../../services/sevice.subject/service.subject';
 
 @Component({
   selector: 'app-modal-to-add-document-component',
@@ -9,30 +11,55 @@ import { EventEmitter } from 'stream';
   templateUrl: './modal.to.add.document.component.html',
   styleUrl: './modal.to.add.document.component.css',
 })
-export class ModalToAddDocumentComponent {
+export class ModalToAddDocumentComponent implements OnInit {
 
+  @Output() onUploadSuccess = new EventEmitter<void>();
 
+  private documentService = inject(DocumentService);
+  private categoryService = inject(ServiceCategory);
+  private subjectService = inject(ServiceSubject);
 
-   public modalStep = 1;
+  public modalStep = 1;
   public formModel = {
     title: '',
     description: '',
-    career: '',
-    subject: '',
-    date: '',
-    teacher: ''
+    type: 'GUIA' as any,
+    category_id: null,
+    subject_id: null,
+    tutor_id: null
   };
+  
+  public categories: any[] = [];
+  public subjects: any[] = [];
+  public documentTypes = ['TESIS', 'GUIA', 'LIBRO', 'PROYECTO', 'EXAMEN', 'OTRO'];
+
   public selectedFile: File | null = null;
+  public fileName: string = '';
   public isUploading = false;
   public uploadProgress = 0;
-  public pendingUploads: any[] = [];
+  public errorMessage: string = '';
+
+  ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData() {
+    this.categoryService.getAllCategories().subscribe(res => {
+      this.categories = res.data;
+    });
+    this.subjectService.getAllSubject().subscribe(res => {
+      this.subjects = res.data;
+    });
+  }
 
   openModal() {
     this.modalStep = 1;
-    this.formModel = { title: '', description: '', career: '', subject: '', date: '', teacher: '' };
+    this.formModel = { title: '', description: '', type: 'GUIA', category_id: null, subject_id: null, tutor_id: null };
     this.selectedFile = null;
+    this.fileName = '';
     this.isUploading = false;
     this.uploadProgress = 0;
+    this.errorMessage = '';
     const d = document.getElementById('my_modal_4') as any;
     if (d && d.showModal) d.showModal();
   }
@@ -52,39 +79,54 @@ export class ModalToAddDocumentComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files && event.target.files[0];
-    if (file) this.selectedFile = file;
+    if (file) {
+      this.selectedFile = file;
+      this.fileName = file.name;
+    }
   }
 
   startUpload() {
-    if (!this.selectedFile) return;
-    // go to verifying step and simulate a 5s verification/loading
+    if (!this.selectedFile || !this.formModel.title || !this.formModel.category_id || !this.formModel.subject_id) return;
+
     this.modalStep = 3;
     this.isUploading = true;
-    this.uploadProgress = 0;
-    const totalMs = 5000;
-    const interval = 100;
-    const steps = totalMs/interval;
-    const increment = 100/steps;
-    const id = setInterval(() => {
-      this.uploadProgress = Math.min(100, this.uploadProgress + increment);
-    }, interval);
+    this.uploadProgress = 30; // Inicio visual
+    this.errorMessage = '';
 
-    setTimeout(() => {
-      clearInterval(id);
-      this.isUploading = false;
-      this.uploadProgress = 100;
-      const data = { ...this.formModel, fileName: this.selectedFile!.name, status: 'pending', createdAt: new Date() };
-      this.pendingUploads.push(data);
-      this.modalStep = 4;
-    }, totalMs);
+    const formData = new FormData();
+    formData.append('archivo', this.selectedFile);
+    formData.append('titulo', this.formModel.title);
+    formData.append('resumen', this.formModel.description);
+    formData.append('tipo', this.formModel.type);
+    
+    if (this.formModel.category_id !== null) {
+        formData.append('categoria_id', (this.formModel.category_id as number).toString());
+    }
+    
+    if (this.formModel.subject_id !== null) {
+        formData.append('asignatura_id', (this.formModel.subject_id as number).toString());
+    }
+    
+    if (this.formModel.tutor_id !== null) {
+        formData.append('tutor_id', (this.formModel.tutor_id as number).toString());
+    }
+
+    this.documentService.uploadDocument(formData).subscribe({
+      next: (res) => {
+        this.isUploading = false;
+        this.uploadProgress = 100;
+        this.modalStep = 4;
+      },
+      error: (err) => {
+        this.isUploading = false;
+        this.errorMessage = err.error?.message || 'Error al subir el documento';
+        this.modalStep = 2; // Regresar para intentar de nuevo
+      }
+    });
   }
 
   confirmDone() {
-    // Close modal but keep pendingUploads until DB finishes processing
     this.closeModal();
+    this.onUploadSuccess.emit();
   }
-
-  
-
-
 }

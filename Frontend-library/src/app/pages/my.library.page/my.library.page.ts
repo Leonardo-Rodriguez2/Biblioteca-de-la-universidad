@@ -1,146 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { PaginatedComponent } from '../../components/paginated.component/paginated.component';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CardsDocumentTeacherComponent } from '../../components/cards.document.teacher.component/cards.document.teacher.component';
 import { CardsDocumentTeacherToVerifyComponent } from '../../components/cards.document.teacher.to.verify.component/cards.document.teacher.to.verify.component';
-import { SearchFiltersComponents } from '../../components/search.filters.components/search.filters.components';
-import { NgClass } from '@angular/common';
 import { ModalToAddDocumentComponent } from '../../components/modal.to.add.document.component/modal.to.add.document.component';
+import { DocumentService } from '../../services/document.service';
 
 @Component({
   selector: 'app-my.library.page',
-  imports: [PaginatedComponent, FormsModule, 
-  CardsDocumentTeacherComponent, CardsDocumentTeacherToVerifyComponent,
-  SearchFiltersComponents, ModalToAddDocumentComponent
-],
+  imports: [PaginatedComponent, FormsModule,
+    CardsDocumentTeacherComponent, CardsDocumentTeacherToVerifyComponent,
+    ModalToAddDocumentComponent
+  ],
   templateUrl: './my.library.page.html',
   styleUrl: './my.library.page.css',
 })
-export class MyLibraryPage { 
+export class MyLibraryPage implements OnInit {
 
+  private documentService = inject(DocumentService);
+  private platformId = inject(PLATFORM_ID);
 
+  public cardItems = signal<any[]>([]);
+  public cardItemsToVerify = signal<any[]>([]);
+  public userId: number | null = null;
 
-
-
-
-
-
-
-
-
-
-
-
-  // Tarjetas de documentos de los docentes
-
-    public cardItems = [
-    { title: 'Informe de Prácticas', 
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore', 
-      amount: 7,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Matemática',
-      date: '12/05/2023'  
-    },
-
-    { title: 'Proyecto Final', 
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 
-      amount: 5,
-      career: 'Ingeniería Industrial',
-      subject: 'Física',
-      date: '20/06/2023'  
-    },
-  
-    { title: 'Análisis de Algoritmos', 
-      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 
-      amount: 10,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Programación',
-      date: '15/07/2023'  
-    }, 
-        { title: 'Informe de Prácticas', 
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore', 
-      amount: 7,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Matemática',
-      date: '12/05/2023'  
-    },
-  
-    { title: 'Proyecto Final', 
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 
-      amount: 5,
-      career: 'Ingeniería Industrial',
-      subject: 'Física',
-      date: '20/06/2023'  
-    },
-  
-    { title: 'Análisis de Algoritmos', 
-      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 
-      amount: 10,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Programación',
-      date: '15/07/2023'  
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        this.userId = user.id;
+        this.loadDocuments();
+      }
     }
-  ];
+  }
 
-  // Tarjetas de documentos de los docentes por verificar
+  loadDocuments() {
+    if (!this.userId) return;
 
-  public cardItemsToVerify = [
-    { title: 'Informe de Prácticas', 
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore', 
-      amount: 7,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Matemática',
-      date: '12/05/2023'  
-    },
-  
-    { title: 'Proyecto Final', 
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 
-      amount: 5,
-      career: 'Ingeniería Industrial',
-      subject: 'Física',
-      date: '20/06/2023'  
-    },
+    this.documentService.getDocuments({ autor: this.userId }).subscribe(res => {
+      const allDocs = res.data.map((d: any) => ({
+        ...d,
+        title: d.titulo,
+        description: d.resumen,
+        subject: d.asignatura_nombre,
+        career: d.categoria_nombre,
+        amount: d.peso_mb,
+        date: d.fecha_subida
+      }));
 
-    { title: 'Análisis de Algoritmos', 
-      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 
-      amount: 10,
-      career: 'Ingeniería en Sistemas',
-      subject: 'Programación',
-      date: '15/07/2023'  
-    }
-  ];
-
-  // Criterios de filtro de búsqueda
+      this.cardItems.set(allDocs.filter((d: any) => d.estado_aprobacion === 'APROBADO' || d.estado_aprobacion === 'PUBLICADO'));
+      this.cardItemsToVerify.set(allDocs.filter((d: any) => d.estado_aprobacion === 'PENDIENTE' || d.estado_aprobacion === 'REVISION' || d.estado_aprobacion === 'RECHAZADO'));
+    });
+  }
 
   public filterCriteria = [
-    {
-      career: 'Ingeniería en Sistemas',
-      subject: 'Matemática',
-      age: 1,
-      date: '12/05/2023',
-      teacher: 'Eber Roa'
-    },
-    {
-      career: 'Ingeniería Industrial',
-      subject: 'Física',
-      age: 2,
-      date: '20/06/2023',
-      teacher: 'Ana Gomez'
-    },
-    {
-      career: 'Ingeniería en Sistemas',
-      subject: 'Programación I',
-      age: 1,
-      date: '15/07/2023',
-      teacher: 'Luis Perez'
-    },
-    {
-      career: 'Ingeniería en Sistemas',
-      subject: 'Programación II',
-      age: 2,
-      date: '12/05/2023',
-      teacher: 'Alfredo Nogera'
-    }
-  ]
-
+    { career: 'Ingeniería en Sistemas', subject: 'Matemática', age: 1, date: '12/05/2023', teacher: 'Eber Roa' }
+  ];
 }

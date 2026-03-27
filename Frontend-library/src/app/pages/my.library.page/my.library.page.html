@@ -1,41 +1,44 @@
 
-
-
-
-
-      <!-- Modal para agregar documento -->
-      <app-modal-to-add-document-component ></app-modal-to-add-document-component> 
-
-
-      <section class="max-w-6xl mx-auto">
-        <h2 class="text-xl font-bold text-gray-800 mb-6"> Verificado </h2>
-    
-      
-        <!-- filtros de busqueda componente -->
-        <app-search-filters-components></app-search-filters-components>
-
-
-      <!-- tarjeta de documento de los docentes -->
-
-      <app-cards-document-teacher-component [cardItems]="cardItems"></app-cards-document-teacher-component>
-        
-        
-      <!-- PAGINADO -->
-
-      <app-paginated-component></app-paginated-component>
-
-
-
-      <h2 class="text-xl font-bold text-gray-800 mb-6"> Aun no verificado </h2>
-
-      <!-- tarjeta de documento de los docentes por verificar -->
-          
-        <app-cards-document-teacher-to-verify-component [cardItemsToVerify]="cardItemsToVerify"></app-cards-document-teacher-to-verify-component>
-        
-      
-      <!-- PAGINADO -->
-
-      <app-paginated-component></app-paginated-component>
-      
+     <section>
+     <!-- Modal para agregar documento -->
+       <section class="mb-12">
+        <div class="bg-green-50 rounded-3xl p-8 flex items-center justify-between overflow-hidden relative border border-green-100">
+          <div class="max-w-md">
+            <p class="text-sm text-gray-700">
+              <span class="font-bold text-green-800"> Agrege un nuevo documentos para el sistema </span> y recuerde que el archivo debe tener un formato válida (.pdf, .docx).
+            </p>
+            <button (click)="modal.openModal()" class="btn cursor-pointer mt-4 bg-white border border-gray-200 px-6 py-2 rounded-full text-sm font-bold hover:shadow-sm transition">
+              + Agregar documento
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📄</div>
+            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📈</div>
+            <div class="w-10 h-12 bg-white rounded shadow-sm flex items-center justify-center text-lg italic border border-green-100">📋</div>
+          </div>
+        </div>
       </section>
 
+      <app-modal-to-add-document-component #modal (onUploadSuccess)="loadDocuments()"></app-modal-to-add-document-component>
+
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6">Mis documentos</h2>
+        @if (cardItems().length > 0) {
+          <app-cards-document-teacher-component [cardItems]="cardItems()"></app-cards-document-teacher-component>
+        } @else {
+          <p class="text-gray-500 italic">No tienes documentos publicados todavía.</p>
+        }
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6">En verificación / rechazados</h2>
+        @if (cardItemsToVerify().length > 0) {
+          <app-cards-document-teacher-to-verify-component [cardItemsToVerify]="cardItemsToVerify()"></app-cards-document-teacher-to-verify-component>
+        } @else {
+          <p class="text-gray-500 italic">No tienes documentos pendientes de verificación.</p>
+        }
+      </section>
+
+      <!-- Paginacion (Placeholder si es necesario) -->
+      <app-paginated-component></app-paginated-component>
+    </sections>
