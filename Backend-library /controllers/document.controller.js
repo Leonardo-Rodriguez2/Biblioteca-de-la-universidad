@@ -185,6 +185,55 @@ const DocumentController = {
             console.error(err);
             res.status(500).json({ message: "Error en el servidor", err: true });
         }
+    },
+
+    // Preview de archivo (inline para PDF, URL pública para DOCX/PPTX)
+    previewDocument: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const [rows] = await db.query(
+                "SELECT url_archivo, nombre_original, formato FROM versiones_archivos WHERE documento_id = ? ORDER BY id DESC LIMIT 1",
+                [id]
+            );
+
+            if (rows.length === 0) {
+                return res.status(404).json({ message: "Archivo no encontrado", err: true });
+            }
+
+            const { url_archivo, nombre_original, formato } = rows[0];
+            const filePath = path.join(process.cwd(), 'uploads', url_archivo);
+
+            if (!fs.existsSync(filePath)) {
+                return res.status(404).json({ message: "El archivo físico no existe", err: true });
+            }
+
+            const fmt = formato.toUpperCase();
+
+            if (fmt === 'PDF') {
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', `inline; filename="${nombre_original}"`);
+                fs.createReadStream(filePath).pipe(res);
+            } else if (fmt === 'DOCX' || fmt === 'PPTX') {
+                // Para estos formatos el frontend usará Google Docs Viewer
+                // Retornamos la URL pública del archivo
+                const host = req.headers['x-forwarded-host'] || req.headers.host;
+                const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+                const publicUrl = `${protocol}://${host}/uploads/${url_archivo}`;
+                res.status(200).json({ 
+                    tipo: 'google_viewer', 
+                    viewerUrl: `https://docs.google.com/gview?url=${encodeURIComponent(publicUrl)}&embedded=true`,
+                    nombre: nombre_original,
+                    formato: fmt
+                });
+            } else {
+                res.status(415).json({ message: `Formato ${fmt} no soportado para preview`, err: true });
+            }
+
+        } catch (err) {
+            console.error("Error al generar preview:", err);
+            res.status(500).json({ message: "Error en el servidor", err: true });
+        }
     }
 }
 

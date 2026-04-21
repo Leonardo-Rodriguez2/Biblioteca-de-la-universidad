@@ -20,6 +20,9 @@ router.put('/:id/status', DocumentController.updateDocumentStatus);
 // Descargar un documento
 router.get('/download/:id', DocumentController.downloadDocument);
 
+// Preview de un documento (inline)
+router.get('/preview/:id', DocumentController.previewDocument);
+
 // Mantener compatibilidad
 router.get('/:id', DocumentController.getContentDocument);
 

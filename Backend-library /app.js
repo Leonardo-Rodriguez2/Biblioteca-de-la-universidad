@@ -8,6 +8,11 @@ import routerUser from './router/user.route.js';
 import routerPnf from './router/pnf.route.js';
 import categoryFileRoute from './router/category.file.route.js';
 import documentRoute from './router/document.route.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +20,9 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors())
+
+// Servir archivos estáticos desde la carpeta uploads (para preview DOCX/PPTX con Google Docs Viewer)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/login', route);
