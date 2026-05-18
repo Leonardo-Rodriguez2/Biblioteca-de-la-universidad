@@ -1,0 +1,105 @@
+<!-- Overlay -->
+<div *ngIf="isOpen()" class="viewer-overlay" (click)="closeViewer()">
+  <!-- Panel principal — .stop-propagation para no cerrar al hacer click dentro -->
+  <div class="viewer-panel" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="viewer-header">
+      <div class="viewer-header-left">
+        <span class="viewer-format-icon">{{ getFormatoIcon(docFormato()) }}</span>
+        <div>
+          <h2 class="viewer-title">{{ docTitle() }}</h2>
+          <span class="viewer-badge" [ngClass]="getFormatoColor(docFormato())">
+            {{ docFormato() }}
+          </span>
+        </div>
+      </div>
+
+      <div class="viewer-header-actions">
+        <!-- Botón descargar -->
+        <button class="btn-action btn-download" (click)="download()" title="Descargar archivo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+          </svg>
+          Descargar
+        </button>
+
+        <!-- Botón abrir externo (solo DOCX/PPTX) -->
+        @if (docType() === 'google_viewer') {
+          <button class="btn-action btn-external" (click)="openExternal()" title="Abrir en visor externo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+              <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+            </svg>
+            Abrir en nueva pestaña
+          </button>
+        }
+
+        <!-- Botón cerrar -->
+        <button class="btn-close" (click)="closeViewer()" title="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido del visor -->
+    <div class="viewer-body">
+
+      <!-- Estado de carga -->
+      @if (isLoading()) {
+        <div class="viewer-state">
+          <div class="spinner"></div>
+          <p>Cargando vista previa…</p>
+        </div>
+      }
+
+      <!-- Error -->
+      @if (!isLoading() && hasError()) {
+        <div class="viewer-state viewer-error">
+          <span class="viewer-state-icon">⚠️</span>
+          <h3>No se puede previsualizar</h3>
+          <p>Ocurrió un error al cargar el archivo. Puedes descargarlo para verlo localmente.</p>
+          <button class="btn-action btn-download" style="margin-top: 1rem;" (click)="download()">
+            Descargar archivo
+          </button>
+        </div>
+      }
+
+      <!-- Vista PDF -->
+      @if (!isLoading() && !hasError() && docType() === 'pdf' && pdfUrl()) {
+        <iframe
+          [src]="pdfUrl()!"
+          class="viewer-iframe"
+          frameborder="0"
+          allowfullscreen
+          title="Vista previa del documento">
+        </iframe>
+      }
+
+      <!-- Vista DOCX Local -->
+      @if (!isLoading() && !hasError() && docType() === 'docx') {
+        <div class="docx-wrapper">
+          <div id="docx-preview-container"></div>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="viewer-footer">
+      @if (docType() === 'google_viewer') {
+        <span class="footer-note">
+          🌐 Vista previa mediante Google Docs Viewer — algunos formatos pueden tardar en cargar.
+        </span>
+      } @else {
+        <span class="footer-note">
+          📄 Vista en línea — para una experiencia completa, descarga el archivo.
+        </span>
+      }
+    </div>
+
+  </div>
+</div>

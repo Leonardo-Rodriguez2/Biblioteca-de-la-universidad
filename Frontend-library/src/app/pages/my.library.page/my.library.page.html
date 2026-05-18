@@ -1,5 +1,6 @@
 
-     <section>
+     <section class=" container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-6">Mi Biblioteca</h1 >
      <!-- Modal para agregar documento -->
        <section class="mb-12">
         <div class="bg-green-50 rounded-3xl p-8 flex items-center justify-between overflow-hidden relative border border-green-100">
@@ -24,7 +25,10 @@
       <section class="mb-12">
         <h2 class="text-xl font-bold mb-6">Mis documentos</h2>
         @if (cardItems().length > 0) {
-          <app-cards-document-teacher-component [cardItems]="cardItems()"></app-cards-document-teacher-component>
+          <app-cards-document-teacher-component 
+            [cardItems]="cardItems()"
+            (openViewer)="viewer.openViewer($event.id, $event.formato, $event.titulo)">
+          </app-cards-document-teacher-component>
         } @else {
           <p class="text-gray-500 italic">No tienes documentos publicados todavía.</p>
         }
@@ -33,7 +37,10 @@
       <section class="mb-12">
         <h2 class="text-xl font-bold mb-6">En verificación / rechazados</h2>
         @if (cardItemsToVerify().length > 0) {
-          <app-cards-document-teacher-to-verify-component [cardItemsToVerify]="cardItemsToVerify()"></app-cards-document-teacher-to-verify-component>
+          <app-cards-document-teacher-to-verify-component 
+            [cardItemsToVerify]="cardItemsToVerify()"
+            (openViewer)="viewer.openViewer($event.id, $event.formato, $event.titulo)">
+          </app-cards-document-teacher-to-verify-component>
         } @else {
           <p class="text-gray-500 italic">No tienes documentos pendientes de verificación.</p>
         }
@@ -42,3 +49,6 @@
       <!-- Paginacion (Placeholder si es necesario) -->
       <app-paginated-component></app-paginated-component>
     </section>
+
+<!-- Modal visor de archivos -->
+<app-modal-document-viewer #viewer></app-modal-document-viewer>

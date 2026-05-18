@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-cards-document-teacher-to-verify-component',
@@ -9,6 +9,10 @@ import { Component, Input } from '@angular/core';
 export class CardsDocumentTeacherToVerifyComponent {
 
   @Input() cardItemsToVerify: Array<{
+    id?: number;
+    titulo?: string;
+    formato?: string;
+    nombre_original?: string;
     title: string;
     description: string;
     amount: number;
@@ -17,4 +21,13 @@ export class CardsDocumentTeacherToVerifyComponent {
     date: string;
   }> = [];
 
+  @Output() openViewer = new EventEmitter<{ id: number; formato: string; titulo: string }>();
+
+  onOpenViewer(item: any) {
+    this.openViewer.emit({
+      id: item.id,
+      formato: item.formato || '',
+      titulo: item.titulo || item.title || ''
+    });
+  }
 }

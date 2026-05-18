@@ -1,13 +1,14 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, PLATFORM_ID } from '@angular/core';
 import { DocumentService } from '../../services/document.service';
 import { ServiceCategory } from '../../services/service.category/service.category';
 import { ServiceSubject } from '../../services/sevice.subject/service.subject';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ModalDocumentViewerComponent } from '../../components/modal.document.viewer.component/modal.document.viewer.component';
 
 @Component({
   selector: 'app-library.page',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, ModalDocumentViewerComponent],
   templateUrl: './library.page.html',
   styleUrl: './library.page.css',
 })
@@ -16,6 +17,7 @@ export class LibraryPage implements OnInit {
   private documentService = inject(DocumentService);
   private categoryService = inject(ServiceCategory);
   private subjectService = inject(ServiceSubject);
+  private platformId = inject(PLATFORM_ID);
 
   public documents = signal<any[]>([]);
   public categories: any[] = [];
@@ -29,8 +31,10 @@ export class LibraryPage implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadDocuments();
-    this.loadFilterData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadDocuments();
+      this.loadFilterData();
+    }
   }
 
   loadDocuments() {

@@ -8,6 +8,7 @@ export const API = {
         document: "/document",
         warehouse: "/warehouse",
         category: "/categories",
-        auth: "/auth"
+        auth: "/auth",
+        login: "/login",
     }
 };

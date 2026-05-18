@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API } from '../../shaders/API';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthLoginService {
   
-  API = "http://localhost:3000"
-  enpoint = "/login"
+  API = API.baseUrl;
+  enpoint = API.endpoints.login;
 
   constructor(private http: HttpClient){
 
@@ -16,7 +17,5 @@ export class AuthLoginService {
   authLogin(body:any){
       return this.http.post(`${this.API}${this.enpoint}`, body)
   }
-
-
 
 }

@@ -1,20 +1,24 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, PLATFORM_ID } from '@angular/core';
 import { DocumentService } from '../../services/document.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { ModalDocumentViewerComponent } from '../../components/modal.document.viewer.component/modal.document.viewer.component';
 
 @Component({
   selector: 'app-document.management.page',
-  imports: [DatePipe],
+  imports: [DatePipe, ModalDocumentViewerComponent],
   templateUrl: './document.management.page.html',
   styleUrl: './document.management.page.css',
 })
 export class DocumentManagementPage implements OnInit {
 
   private documentService = inject(DocumentService);
+  private platformId = inject(PLATFORM_ID);
   public pendingDocuments = signal<any[]>([]);
 
   ngOnInit(): void {
-    this.loadPendingDocuments();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadPendingDocuments();
+    }
   }
 
   loadPendingDocuments() {

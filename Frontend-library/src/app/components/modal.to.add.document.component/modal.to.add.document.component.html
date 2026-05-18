@@ -19,41 +19,57 @@
 
     <!-- Ventana 1 Informacion del documento -->
     @if (modalStep === 1) {
-      <div>
-        <div class="mt-6 grid grid-cols-2 gap-3">
-          <input class="input input-bordered" placeholder="Título del documento" [(ngModel)]="formModel.title" name="title" title="El titulo del documento no puede ser menor a 3 caracteres ni mayor a 50" required minlength="3" maxlength="50" />
-          
-          <div class="flex gap-2">
-            <select [(ngModel)]="formModel.type" name="type" class="select select-bordered w-full">
-              <option disabled selected>Tipo de documento</option>
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <!-- Campo Título -->
+          <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Título del Documento</label>
+            <input class="input-flat w-full" placeholder="Ej. Guía de Programación Web" [(ngModel)]="formModel.title" name="title" title="El titulo del documento no puede ser menor a 3 caracteres ni mayor a 50" required minlength="3" maxlength="50" />
+          </div>
+
+          <!-- Campo Tipo -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Tipo de Documento</label>
+            <select [(ngModel)]="formModel.type" name="type" class="select-flat w-full">
+              <option disabled selected>Selecciona el tipo</option>
               @for (t of documentTypes; track t) {
                 <option [value]="t">{{t}}</option>
               }
             </select>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <select [(ngModel)]="formModel.category_id" name="category" class="select select-bordered w-full" required>
-              <option [ngValue]="null" disabled selected>Categoría</option>
+          <!-- Campo Categoría -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Categoría</label>
+            <select [(ngModel)]="formModel.category_id" name="category" class="select-flat w-full" required>
+              <option [ngValue]="null" disabled selected>Selecciona la categoría</option>
               @for (c of categories; track c.id) {
                 <option [ngValue]="c.id">{{c.nombre}}</option>
               }
             </select>
+          </div>
 
-            <select [(ngModel)]="formModel.subject_id" name="subject" class="select select-bordered w-full" required>
-              <option [ngValue]="null" disabled selected>Asignatura</option>
+          <!-- Campo Asignatura -->
+          <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Asignatura</label>
+            <select [(ngModel)]="formModel.subject_id" name="subject" class="select-flat w-full" required>
+              <option [ngValue]="null" disabled selected>Selecciona la asignatura</option>
               @for (s of subjects; track s.id) {
                 <option [ngValue]="s.id">{{s.nombre}}</option>
               }
             </select>
           </div>
         </div>
-        <div class="flex gap-2 mt-2">
-          <textarea class="textarea textarea-bordered size-full" placeholder="Descripción" [(ngModel)]="formModel.description" name="description"></textarea>
+
+        <!-- Campo Descripción -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Descripción / Resumen</label>
+          <textarea class="textarea-flat w-full min-h-[100px]" placeholder="Escribe un breve resumen de los temas tratados en el documento..." [(ngModel)]="formModel.description" name="description"></textarea>
         </div>
-        <div class="modal-action mt-4">
-          <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary" (click)="nextStep()" [disabled]="!formModel.title || !formModel.category_id || !formModel.subject_id">Siguiente</button>
+
+        <div class="modal-action">
+          <button class="btn btn-secondary px-5 py-2" (click)="closeModal()">Cancelar</button>
+          <button class="btn btn-primary px-6 py-2" (click)="nextStep()" [disabled]="!formModel.title || !formModel.category_id || !formModel.subject_id">Siguiente</button>
         </div>
       </div>
     }

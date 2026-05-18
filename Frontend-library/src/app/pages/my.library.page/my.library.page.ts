@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { CardsDocumentTeacherComponent } from '../../components/cards.document.teacher.component/cards.document.teacher.component';
 import { CardsDocumentTeacherToVerifyComponent } from '../../components/cards.document.teacher.to.verify.component/cards.document.teacher.to.verify.component';
 import { ModalToAddDocumentComponent } from '../../components/modal.to.add.document.component/modal.to.add.document.component';
+import { ModalDocumentViewerComponent } from '../../components/modal.document.viewer.component/modal.document.viewer.component';
 import { DocumentService } from '../../services/document.service';
 
 @Component({
   selector: 'app-my.library.page',
   imports: [PaginatedComponent, FormsModule,
     CardsDocumentTeacherComponent, CardsDocumentTeacherToVerifyComponent,
-    ModalToAddDocumentComponent
+    ModalToAddDocumentComponent, ModalDocumentViewerComponent
   ],
   templateUrl: './my.library.page.html',
   styleUrl: './my.library.page.css',

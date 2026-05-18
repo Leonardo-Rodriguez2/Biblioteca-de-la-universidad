@@ -41,4 +41,22 @@ export class DocumentService {
       responseType: 'blob'
     });
   }
+
+  // Preview de documento — devuelve blob para PDF, JSON para DOCX/PPTX
+  previewDocument(id: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}${this.endpoint}/preview/${id}`, {
+      responseType: 'blob',
+      observe: 'body'
+    });
+  }
+
+  // Preview info para DOCX/PPTX (retorna JSON con viewerUrl)
+  getPreviewInfo(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}${this.endpoint}/preview/${id}`);
+  }
+
+  // URL directa del preview (útil para iframe de PDF)
+  getPreviewUrl(id: number): string {
+    return `${this.baseUrl}${this.endpoint}/preview/${id}`;
+  }
 }
