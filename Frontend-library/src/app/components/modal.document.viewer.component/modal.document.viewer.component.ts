@@ -92,8 +92,24 @@ export class ModalDocumentViewerComponent {
           this.isLoading.set(false);
         }
       });
+    } else if (fmt === 'PPTX' || fmt === 'PPT') {
+      this.docType.set('google_viewer');
+      this.documentService.getPreviewInfo(docId).subscribe({
+        next: (res: any) => {
+          if (res && res.viewerUrl) {
+            this.viewerUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(res.viewerUrl));
+          } else {
+            this.hasError.set(true);
+          }
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.hasError.set(true);
+          this.isLoading.set(false);
+        }
+      });
     } else {
-      // PPTX u otros formatos sin soporte nativo de preview local
+      // Otros formatos sin soporte nativo de preview local
       this.docType.set('unsupported');
       this.hasError.set(true);
       this.isLoading.set(false);

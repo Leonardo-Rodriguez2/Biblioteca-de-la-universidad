@@ -3,6 +3,11 @@ import { JWT_KEY } from "../shaders/jwt.key.js";
 
 const jwtMiddleware = {
     verifyJwt: (req, res, next) => {
+        // Permitir peticiones OPTIONS (CORS preflight) sin validar token
+        if (req.method === 'OPTIONS') {
+            return next();
+        }
+
         const authHeader = req.header('Authorization');
         
         if (!authHeader) {

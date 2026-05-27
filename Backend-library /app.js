@@ -37,7 +37,11 @@ app.use('/categories', categoryFileRoute)
 
 app.use('/document', documentRoute);
 
-
+// Middleware global para capturar errores (como los de multer) y responder en formato JSON
+app.use((err, req, res, next) => {
+  console.error("Error capturado por el middleware global:", err.message);
+  res.status(400).json({ message: err.message || "Error interno del servidor", err: true });
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor encendido en la ruta http://192.168.100.34:${PORT}`);

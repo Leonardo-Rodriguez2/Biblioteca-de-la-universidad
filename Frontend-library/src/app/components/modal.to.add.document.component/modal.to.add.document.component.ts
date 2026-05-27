@@ -90,7 +90,7 @@ export class ModalToAddDocumentComponent implements OnInit {
 
     this.modalStep = 3;
     this.isUploading = true;
-    this.uploadProgress = 30; // Inicio visual
+    this.uploadProgress = 0;
     this.errorMessage = '';
 
     const formData = new FormData();
@@ -113,14 +113,16 @@ export class ModalToAddDocumentComponent implements OnInit {
 
     this.documentService.uploadDocument(formData).subscribe({
       next: (res) => {
+        console.log("Upload completed successfully! Response:", res);
         this.isUploading = false;
         this.uploadProgress = 100;
         this.modalStep = 4;
       },
       error: (err) => {
+        console.error("Upload error:", err);
         this.isUploading = false;
         this.errorMessage = err.error?.message || 'Error al subir el documento';
-        this.modalStep = 2; // Regresar para intentar de nuevo
+        this.modalStep = 2; // Regresar al paso 2 para mostrar el error
       }
     });
   }

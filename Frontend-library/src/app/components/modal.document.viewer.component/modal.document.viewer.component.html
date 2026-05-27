@@ -79,12 +79,21 @@
         </iframe>
       }
 
-      <!-- Vista DOCX Local -->
-      @if (!isLoading() && !hasError() && docType() === 'docx') {
-        <div class="docx-wrapper">
-          <div id="docx-preview-container"></div>
-        </div>
+      <!-- Vista Google Viewer (DOCX/PPTX) -->
+      @if (!isLoading() && !hasError() && docType() === 'google_viewer' && viewerUrl()) {
+        <iframe
+          [src]="viewerUrl()!"
+          class="viewer-iframe"
+          frameborder="0"
+          allowfullscreen
+          title="Vista previa del documento">
+        </iframe>
       }
+
+      <!-- Vista DOCX Local -->
+      <div [style.display]="(docType() === 'docx' && !hasError()) ? 'block' : 'none'" class="docx-wrapper">
+        <div id="docx-preview-container"></div>
+      </div>
 
     </div>
 

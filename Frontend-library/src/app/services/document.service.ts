@@ -37,14 +37,16 @@ export class DocumentService {
 
   // Descargar documento
   downloadDocument(id: number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}${this.endpoint}/download/${id}`, {
+    const t = new Date().getTime();
+    return this.http.get(`${this.baseUrl}${this.endpoint}/download/${id}?t=${t}`, {
       responseType: 'blob'
     });
   }
 
   // Preview de documento — devuelve blob para PDF, JSON para DOCX/PPTX
   previewDocument(id: number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}${this.endpoint}/preview/${id}`, {
+    const t = new Date().getTime();
+    return this.http.get(`${this.baseUrl}${this.endpoint}/preview/${id}?t=${t}`, {
       responseType: 'blob',
       observe: 'body'
     });

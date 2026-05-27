@@ -22,11 +22,12 @@ const upload = multer({
     storage: storage,
     limits: { fileSize: 50 * 1024 * 1024 }, // Límite de 50MB
     fileFilter: (req, file, cb) => {
+        console.log("fileFilter received file:", { originalname: file.originalname, mimetype: file.mimetype });
         const filetypes = /jpeg|jpg|png|pdf|doc|docx|xls|xlsx|ppt|pptx|txt|mp4|mkv/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = filetypes.test(file.mimetype);
-
-        if (mimetype && extname) {
+        
+        // Acepta si la extensión del archivo es válida (evita problemas con mimetypes de suites de oficina alternativas como WPS Office)
+        if (extname) {
             return cb(null, true);
         } else {
             cb(new Error('Formato de archivo no soportado'));

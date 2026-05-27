@@ -1,136 +1,149 @@
+<!-- Volver a repasar el @input y @output de angular y separar la modal de agregar en otro componente -->
 
-  <!-- Volver a repasar el @input y @output de angular y separar la modal de agregar en otro componente -->
+<div class="max-w-6xl mx-auto p-8">
+  <dialog id="my_modal_4" class="modal">
+    <div class="modal-box w-11/12 max-w-5xl">
+      <h3 class="text-lg font-bold">Registrar nuevo documento</h3>
+      <ul class="steps steps-vertical lg:steps-horizontal mb-4">
+        <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Información del documento</li>
+        <li [ngClass]="modalStep>=2? 'step step-primary':'step'">Seleccione el documento</li>
+        <li [ngClass]="modalStep>=3? 'step step-primary':'step'">Verificando</li>
+        <li [ngClass]="modalStep>=4? 'step step-primary':'step'">Listo</li>
+      </ul>
 
-      <div class="max-w-6xl mx-auto p-8">
-    
-        
+      <!-- Ventana 1 Informacion del documento -->
+      @if (modalStep === 1) {
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <!-- Campo Título -->
+            <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Título del Documento</label>
+              <input class="input-flat w-full" placeholder="Ej. Guía de Programación Web" [(ngModel)]="formModel.title" name="title" title="El título del documento no puede ser menor a 3 caracteres ni mayor a 50" required minlength="3" maxlength="50" />
+            </div>
 
+            <!-- Campo Tipo -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Tipo de Documento</label>
+              <select [(ngModel)]="formModel.type" name="type" class="select-flat w-full">
+                <option disabled selected>Selecciona el tipo</option>
+                @for (t of documentTypes; track t) {
+                  <option [value]="t">{{t}}</option>
+                }
+              </select>
+            </div>
 
+            <!-- Campo Categoría -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Categoría</label>
+              <select [(ngModel)]="formModel.category_id" name="category" class="select-flat w-full" required>
+                <option [ngValue]="null" disabled selected>Selecciona la categoría</option>
+                @for (c of categories; track c.id) {
+                  <option [ngValue]="c.id">{{c.nombre}}</option>
+                }
+              </select>
+            </div>
 
-      <dialog id="my_modal_4" class="modal">
-  <div class="modal-box w-11/12 max-w-5xl">
-    <h3 class="text-lg font-bold">Registrar nuevo documento</h3>
-    <ul class="steps steps-vertical lg:steps-horizontal mb-4">
-      <li [ngClass]="modalStep>=1? 'step step-primary':'step'">Informacion del documento</li>
-      <li [ngClass]="modalStep>=2? 'step step-primary':'step'">Selecione el documento</li>
-      <li [ngClass]="modalStep>=3? 'step step-primary':'step'">Verificando</li>
-      <li [ngClass]="modalStep>=4? 'step step-primary':'step'">Listo</li>
-    </ul>
-
-    <!-- Ventana 1 Informacion del documento -->
-    @if (modalStep === 1) {
-      <div class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <!-- Campo Título -->
-          <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
-            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Título del Documento</label>
-            <input class="input-flat w-full" placeholder="Ej. Guía de Programación Web" [(ngModel)]="formModel.title" name="title" title="El titulo del documento no puede ser menor a 3 caracteres ni mayor a 50" required minlength="3" maxlength="50" />
+            <!-- Campo Asignatura -->
+            <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Asignatura</label>
+              <select [(ngModel)]="formModel.subject_id" name="subject" class="select-flat w-full" required>
+                <option [ngValue]="null" disabled selected>Selecciona la asignatura</option>
+                @for (s of subjects; track s.id) {
+                  <option [ngValue]="s.id">{{s.nombre}}</option>
+                }
+              </select>
+            </div>
           </div>
 
-          <!-- Campo Tipo -->
+          <!-- Campo Descripción -->
           <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Tipo de Documento</label>
-            <select [(ngModel)]="formModel.type" name="type" class="select-flat w-full">
-              <option disabled selected>Selecciona el tipo</option>
-              @for (t of documentTypes; track t) {
-                <option [value]="t">{{t}}</option>
-              }
-            </select>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Descripción / Resumen</label>
+            <textarea class="textarea-flat w-full min-h-[100px]" placeholder="Escribe un breve resumen de los temas tratados en el documento..." [(ngModel)]="formModel.description" name="description"></textarea>
           </div>
 
-          <!-- Campo Categoría -->
-          <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Categoría</label>
-            <select [(ngModel)]="formModel.category_id" name="category" class="select-flat w-full" required>
-              <option [ngValue]="null" disabled selected>Selecciona la categoría</option>
-              @for (c of categories; track c.id) {
-                <option [ngValue]="c.id">{{c.nombre}}</option>
-              }
-            </select>
-          </div>
-
-          <!-- Campo Asignatura -->
-          <div class="flex flex-col gap-1.5 col-span-1 md:col-span-2">
-            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Asignatura</label>
-            <select [(ngModel)]="formModel.subject_id" name="subject" class="select-flat w-full" required>
-              <option [ngValue]="null" disabled selected>Selecciona la asignatura</option>
-              @for (s of subjects; track s.id) {
-                <option [ngValue]="s.id">{{s.nombre}}</option>
-              }
-            </select>
+          <div class="modal-action">
+            <button class="btn btn-secondary px-5 py-2" (click)="closeModal()">Cancelar</button>
+            <button class="btn btn-primary px-6 py-2" (click)="nextStep()" [disabled]="!formModel.title || !formModel.category_id || !formModel.subject_id">Siguiente</button>
           </div>
         </div>
+      }
 
-        <!-- Campo Descripción -->
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Descripción / Resumen</label>
-          <textarea class="textarea-flat w-full min-h-[100px]" placeholder="Escribe un breve resumen de los temas tratados en el documento..." [(ngModel)]="formModel.description" name="description"></textarea>
-        </div>
+      <!-- ventana 2 selecione el documento -->
+      @if (modalStep === 2) {
+        <div class="space-y-4">
+          @if (errorMessage) {
+            <div class="alert alert-error mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>{{errorMessage}}</span>
+            </div>
+          }
 
-        <div class="modal-action">
-          <button class="btn btn-secondary px-5 py-2" (click)="closeModal()">Cancelar</button>
-          <button class="btn btn-primary px-6 py-2" (click)="nextStep()" [disabled]="!formModel.title || !formModel.category_id || !formModel.subject_id">Siguiente</button>
-        </div>
-      </div>
-    }
+          <!-- Dropzone Container -->
+          @if (!selectedFile) {
+            <label for="dropzone-file" class="dropzone-container">
+              <span class="dropzone-icon">📥</span>
+              <span class="dropzone-title">Haga clic aquí para seleccionar un archivo</span>
+              <span class="dropzone-subtitle">Formatos válidos: PDF, DOCX, PPTX (Máx. 50 MB)</span>
+              <input id="dropzone-file" type="file" class="hidden" accept=".pdf,.docx,.pptx" (change)="onFileSelected($event)" />
+            </label>
+          }
 
-     <!-- ventana 2 selecione el documento -->
-     @if (modalStep === 2) {
-       <div>
-        @if (errorMessage) {
-          <div class="alert alert-error mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>{{errorMessage}}</span>
+          <!-- Selected File Card -->
+          @if (selectedFile) {
+            <div class="file-info-card">
+              <div class="file-info-left">
+                <span class="file-icon">📄</span>
+                <div class="file-details">
+                  <span class="file-name">{{ fileName }}</span>
+                  <span class="file-size">{{ (selectedFile.size / (1024 * 1024)).toFixed(2) }} MB</span>
+                </div>
+              </div>
+              <button class="btn-change-file" (click)="selectedFile = null; fileName = ''">Cambiar archivo</button>
+            </div>
+          }
+
+          <div class="modal-action mt-4">
+            <button class="btn btn-secondary px-5 py-2" (click)="prevStep()">Atrás</button>
+            <button class="btn btn-primary px-6 py-2" (click)="startUpload()" [disabled]="!selectedFile">Subir Documento</button>
           </div>
-        }
-<div class="flex items-center justify-center w-full">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 bg-neutral-secondary-medium border border-dashed border-default-strong rounded-base cursor-pointer hover:bg-neutral-tertiary-medium">
-        <div class="flex flex-col items-center justify-center text-body pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"/></svg>
-            <p class="mb-2 text-sm"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs">DOCX, PDF, JPG (MAX. 50MB)</p>
         </div>
-        <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" />
-    </label>
-</div> 
+      }
 
-         @if (selectedFile) {
-           <div class="mt-2 text-center">
-             <div class="text-sm font-bold text-blue-600">Archivo seleccionado: {{fileName}}</div>
-           </div>
-         }
-         <div class="modal-action mt-4">
-           <button class="btn" (click)="prevStep()">Atrás</button>
-           <button class="btn btn-primary" (click)="startUpload()" [disabled]="!selectedFile">Subir</button>
-         </div>
-       </div>
-     }
-
-     <!-- ventana 3 Verificacion -->
-    @if (modalStep === 3) {
-      <div>
-        <p class="text-sm mb-4">Verificando archivo...</p>
-        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-          <div class="bg-blue-500 h-3" [style.width.%]="uploadProgress"></div>
+      <!-- ventana 3 Verificacion y Carga -->
+      @if (modalStep === 3) {
+        <div class="progress-container">
+          <p class="progress-text">
+            @if (uploadProgress > 0) {
+              Subiendo y verificando documento… {{ uploadProgress }}%
+            } @else {
+              Subiendo y verificando documento…
+            }
+          </p>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" 
+                 [ngClass]="{'progress-bar-animated': uploadProgress === 0}" 
+                 [style.width.%]="uploadProgress || 100">
+            </div>
+          </div>
+          <div class="modal-action mt-4 justify-center">
+            <button class="btn btn-secondary px-5 py-2" (click)="closeModal()" [disabled]="isUploading">Cancelar</button>
+          </div>
         </div>
-        <div class="modal-action mt-4">
-          <button class="btn" (click)="closeModal()" [disabled]="isUploading">Cancelar</button>
-        </div>
-      </div>
-    }
+      }
 
-  
-    <!-- ventana 4 Listo -->
-    @if (modalStep === 4) {
-      <div class="text-center">
-        <p class="text-green-600 font-bold text-lg">¡Listo! El documento se guardó en la lista pendiente.</p>
-        <p class="text-sm mt-2">Se enviará a la base de datos cuando esté disponible.</p>
-        <div class="modal-action mt-4">
-        <button class="btn btn-primary" (click)="confirmDone()">Cerrar</button>
-      </div>
+      <!-- ventana 4 Listo -->
+      @if (modalStep === 4) {
+        <div class="text-center space-y-4 py-4">
+          <div class="text-5xl"></div>
+          <h4 class="text-xl font-bold text-green-600">¡Documento subido con éxito!</h4>
+          <p class="text-sm text-gray-500 max-w-md mx-auto">
+            El archivo ha sido guardado de forma segura y se encuentra en revisión. Te avisaremos cuando sea aprobado.
+          </p>
+          <div class="modal-action justify-center">
+            <button class="btn btn-primary px-8 py-2" (click)="confirmDone()">Entendido</button>
+          </div>
+        </div>
+      }
     </div>
-    }
-  </div>
-
-</dialog>
-
+  </dialog>
+</div>
