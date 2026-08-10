@@ -37,7 +37,7 @@ const PnfController = {
                 return res.status(400).json({ message: 'No se pudo agregar el PNF' });
             }
 
-            res.status(201).json({ message: 'PNF agregado correctamente', id: data.insertId });
+            res.status(201).json({ message: 'PNF agregado correctamente en el sistema web', id: data.insertId });
         } catch (err) {
             console.error("Error en la consulta ",err)
         }
